@@ -7,33 +7,35 @@
 
 import os
 import gui
+from gui.settingsDialogs import SettingsPanel
+from gui import guiHelper
 import wx
 from . import addonConfig
 import addonHandler
 
-addonHandler.initTranslation()
 
 
-class QuickNotetakerPanel(gui.SettingsPanel):
+
+class QuickNotetakerPanel(SettingsPanel):
 
     # Translators: the title of the Quick Notetaker panel in NVDA's settings
     title = _("Quick Notetaker")
 
     def makeSettings(self, settingsSizer):
-        sHelper = gui.guiHelper.BoxSizerHelper(self, sizer=settingsSizer)
+        sHelper = guiHelper.BoxSizerHelper(self, sizer=settingsSizer)
         # Translators: the label of the control in Quick Notetaker settings panel for choosing a default folder where the add-on documents will be saved
         directoryGroupText = _("Default documents directory:")
         groupSizer = wx.StaticBoxSizer(
             wx.VERTICAL, self, label=directoryGroupText)
         groupHelper = sHelper.addItem(
-            gui.guiHelper.BoxSizerHelper(self, sizer=groupSizer))
+            guiHelper.BoxSizerHelper(self, sizer=groupSizer))
         groupBox = groupSizer.GetStaticBox()
         # Translators: the label of a button to browse for a directory
         browseText = _("Browse...")
         dirDialogTitle = _(
             # Translators: The title of the dialog presented when browsing for the directory where quick notetaker documents will be stored
             "Select a default directory where the documents of Quick Notetaker will be stored")
-        directoryPathHelper = gui.guiHelper.PathSelectionHelper(
+        directoryPathHelper = guiHelper.PathSelectionHelper(
             groupBox, browseText, dirDialogTitle)
         directoryEntryControl = groupHelper.addItem(directoryPathHelper)
         self.documentDirectoryEdit = directoryEntryControl.pathControl
