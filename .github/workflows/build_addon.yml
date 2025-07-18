@@ -19,8 +19,6 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
-    - run: echo -e "pre-commit\nscons\nmarkdown">requirements.txt
-
     - name: Set up Python
       uses: actions/setup-python@v5
       with:
@@ -30,7 +28,7 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip wheel
-        pip install -r requirements.txt
+        pip install pre-commit scons markdown
         sudo apt-get update  -y
         sudo apt-get install -y gettext
 
@@ -39,6 +37,12 @@ jobs:
 
     - name: building addon
       run: scons && scons pot
+
+    - name: Run test cases
+      run: |
+        if [ -f test_pandoc_conversion_py ]; then
+          python test_pandoc_conversion_py;
+        fi
 
     - uses: actions/upload-artifact@v4
       with:
