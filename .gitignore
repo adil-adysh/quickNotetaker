@@ -1,7 +1,7 @@
 addon/doc/*.css
 addon/doc/en/
 *_docHandler.py
-globalPlugins/quickNotetaker/lib/pandoc/
+addon/globalPlugins/quickNotetaker/lib/pandoc/*
 *.html
 manifest.ini
 *.mo
@@ -10,3 +10,4 @@ manifest.ini
 *.nvda-addon
 .sconsign.dblite
 /[0-9]*.[0-9]*.[0-9]*.json
+		
