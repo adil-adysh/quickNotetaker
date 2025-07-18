@@ -7,6 +7,7 @@
 
 import globalVars
 import os
+import sys
 
 CONFIG_PATH = globalVars.appArgs.configPath
 
@@ -23,12 +24,21 @@ DATA_DIR_PATH = os.path.join(CONFIG_PATH, "Quick Notetaker data")
 
 DATA_FILE_PATH = os.path.join(DATA_DIR_PATH, "notes.json")
 
-PANDOC_PATH = os.path.join(
-    QUICK_NOTETAKER_PATH, "quickNotetaker", "lib", "pandoc-3.1.2", "pandoc")
+def get_pandoc_path(base_path):
+    """
+    Always use the pandoc binary in the 'pandoc' folder inside 'lib'.
+    Returns the full path to the pandoc executable, or None if not found.
+    """
+    lib_dir = os.path.join(base_path, "quickNotetaker", "lib")
+    pandoc_dir = os.path.join(lib_dir, "pandoc")
+    pandoc_bin_name = "pandoc.exe" if os.name == "nt" else "pandoc"
+    pandoc_bin = os.path.join(pandoc_dir, pandoc_bin_name)
+    if os.path.isfile(pandoc_bin):
+        return pandoc_bin
+    return None
 
-PANDOC_PATH_DEV = os.path.join(
-    QUICK_NOTETAKER_PATH_DEV, "lib", "pandoc-3.1.2", "pandoc")
-
+PANDOC_PATH = get_pandoc_path(QUICK_NOTETAKER_PATH)
+PANDOC_PATH_DEV = get_pandoc_path(QUICK_NOTETAKER_PATH_DEV)
 # Remember to comment out in production
 # PANDOC_PATH = PANDOC_PATH_DEV
 
