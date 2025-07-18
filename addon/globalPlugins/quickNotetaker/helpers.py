@@ -50,41 +50,49 @@ def _saveAsWord(mdContent, filePath, callBack, *args):
 
 
 def _runPandocCommand(fileTitle, outputFilePath, isHtmlDocument):
-    pandocArgs = [PANDOC_PATH, "-f", "markdown", "-t",
-                  "docx", "-s", "-i", f"{TEMP_FILES_PATH}/{fileTitle}.md"]
-    if isHtmlDocument:
-        pandocArgs.extend(["-V", "dir[=rtl]"])
-    pandocArgs.append("-o")
+    def build_pandoc_args(input_path, output_path, is_html):
+        args = [PANDOC_PATH, "-f", "markdown", "-t", "docx", "-s", "-i", input_path]
+        if is_html:
+            args.extend(["-V", "dir[=rtl]"])
+        args.extend(["-o", output_path])
+        return args
+
+    input_md = f"{TEMP_FILES_PATH}/{fileTitle}.md"
     startupInfo = subprocess.STARTUPINFO()
     startupInfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW
-    pandocArgs.append(outputFilePath)
+
+    # Try main output path
+    args = build_pandoc_args(input_md, outputFilePath, isHtmlDocument)
     try:
-        subprocess.run(pandocArgs, check=True, startupinfo=startupInfo)
+        subprocess.run(args, check=True, startupinfo=startupInfo, capture_output=True)
         return outputFilePath, False
-    except subprocess.CalledProcessError:
-        pandocArgs.remove(outputFilePath)
-    if not os.path.isdir(addonConfig.getValue("notesDocumentsPath")):
-        os.mkdir(addonConfig.getValue("notesDocumentsPath"))
-    log.debug(
-        "the specified directory name is invalid! Reverting to the user default one.")
-    outputFilePath = os.path.join(addonConfig.getValue(
-        "notesDocumentsPath"), f"{fileTitle}.docx")
-    pandocArgs.append(outputFilePath)
+    except subprocess.CalledProcessError as e:
+        log.error(f"Pandoc failed for {outputFilePath}: {e.stderr.decode(errors='ignore')}")
+
+    # Try user documents path
+    user_docs = addonConfig.getValue("notesDocumentsPath")
+    if not os.path.isdir(user_docs):
+        os.mkdir(user_docs)
+    log.debug("the specified directory name is invalid! Reverting to the user default one.")
+    outputFilePath = os.path.join(user_docs, f"{fileTitle}.docx")
+    args = build_pandoc_args(input_md, outputFilePath, isHtmlDocument)
     try:
-        subprocess.run(pandocArgs, check=True, startupinfo=startupInfo)
+        subprocess.run(args, check=True, startupinfo=startupInfo, capture_output=True)
         return outputFilePath, True
-    except subprocess.CalledProcessError:
-        pandocArgs.remove(outputFilePath)
+    except subprocess.CalledProcessError as e:
+        log.error(f"Pandoc failed for {outputFilePath}: {e.stderr.decode(errors='ignore')}")
+
+    # Try add-on default documents path
     if not os.path.isdir(DEFAULT_DOCUMENTS_PATH):
         os.mkdir(DEFAULT_DOCUMENTS_PATH)
-    log.debug(
-        "The specified directory name is invalid! Reverting to the add-on default one.")
+    log.debug("The specified directory name is invalid! Reverting to the add-on default one.")
     outputFilePath = os.path.join(DEFAULT_DOCUMENTS_PATH, f"{fileTitle}.docx")
-    pandocArgs.append(outputFilePath)
+    args = build_pandoc_args(input_md, outputFilePath, isHtmlDocument)
     try:
-        subprocess.run(pandocArgs, check=True, startupinfo=startupInfo)
+        subprocess.run(args, check=True, startupinfo=startupInfo, capture_output=True)
         return outputFilePath, True
-    except subprocess.CalledProcessError:
+    except subprocess.CalledProcessError as e:
+        log.error(f"Pandoc failed for {outputFilePath}: {e.stderr.decode(errors='ignore')}")
         raise
 
 

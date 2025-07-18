@@ -1,6 +1,7 @@
 addon/doc/*.css
 addon/doc/en/
 *_docHandler.py
+globalPlugins/quickNotetaker/lib/pandoc/
 *.html
 manifest.ini
 *.mo
