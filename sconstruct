@@ -9,7 +9,6 @@ import os
 import os.path
 import zipfile
 import sys
-import fetch_pandoc
 
 # Add-on localization exchange facility and the template requires Python 3.10.
 # For best practice, use Python 3.11 or later to align with NVDA development.
@@ -245,22 +244,6 @@ def expandGlobs(files):
 
 
 addon = env.NVDAAddon(addonFile, env.Dir("addon"))
-
-# --- Pandoc Download Integration ---
-PANDOC_DEST_DIR = os.path.join("addon", "globalPlugins", "quickNotetaker", "lib", "pandoc")
-PANDOC_EXE_PATH = os.path.join(PANDOC_DEST_DIR, "pandoc.exe")
-
-def scons_download_latest_pandoc(target, source, env):
-	fetch_pandoc.download_latest_pandoc()
-	return None
-
-downloadPandoc = env.Command(
-	target=PANDOC_EXE_PATH,
-	source=[],
-	action=scons_download_latest_pandoc
-)
-env.Depends(addon, downloadPandoc)
-env.Alias("fetch_pandoc", downloadPandoc)
 
 langDirs = [f for f in env.Glob(os.path.join("addon", "locale", "*"))]
 
