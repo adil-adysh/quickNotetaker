@@ -37,7 +37,7 @@ jobs:
       - name: Cache pre-commit
         uses: actions/cache@v4
         with:
-          path: ~/.cache/pre-commit
+          path: ${{ env.USERPROFILE }}\.cache\pre-commit
           key: pre-commit-${{ hashFiles('.pre-commit-config.yaml') }}
           restore-keys: |
             pre-commit-
@@ -50,8 +50,16 @@ jobs:
           restore-keys: |
             scons-${{ runner.os }}-
 
+      - name: Cache scoop
+        uses: actions/cache@v4
+        with:
+          path: ~/scoop/cache
+          key: scoop-${{ runner.os }}
+          restore-keys: |
+            scoop-${{ runner.os }}-
+
       - name: Install gettext tools
-        run: choco install gettext -y
+        run: scoop install gettext
 
       - name: Code checks
         run: pre-commit run --all
