@@ -62,6 +62,9 @@ jobs:
       - name: building addon
         run: scons && scons pot
 
+      - name: Download Pandoc
+        run: python download_pandoc.py
+
       - name: Run test cases
         run: |
           if (Test-Path test_pandoc_conversion_py) {
