@@ -59,11 +59,11 @@ jobs:
       - name: Code checks
         run: pre-commit run --all
 
-      - name: building addon
-        run: scons && scons pot
-
       - name: Download Pandoc
         run: python download_pandoc.py
+
+      - name: building addon
+        run: scons && scons pot
 
       - name: Run test cases
         run: |
