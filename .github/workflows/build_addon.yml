@@ -30,6 +30,9 @@ jobs:
           python -m pip install --upgrade pip wheel
           pip install pre-commit scons markdown
 
+      - name: Install gettext tools
+        run: choco install gettext -y
+
       - name: Code checks
         run: pre-commit run --all
 
