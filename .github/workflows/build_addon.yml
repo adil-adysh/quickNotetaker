@@ -50,16 +50,11 @@ jobs:
           restore-keys: |
             scons-${{ runner.os }}-
 
-      - name: Cache scoop
-        uses: actions/cache@v4
-        with:
-          path: ~/scoop/cache
-          key: scoop-${{ runner.os }}
-          restore-keys: |
-            scoop-${{ runner.os }}-
-
       - name: Install gettext tools
-        run: scoop install gettext
+        run: |
+          choco install gettext -y
+          $env:PATH = "C:\Program Files\gettext-iconv\bin;$env:PATH"
+          echo "C:\Program Files\gettext-iconv\bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
 
       - name: Code checks
         run: pre-commit run --all
