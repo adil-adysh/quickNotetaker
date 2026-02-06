@@ -64,9 +64,9 @@ jobs:
 
       - name: Run test cases
         run: |
-          if exist test_pandoc_conversion_py (
+          if (Test-Path test_pandoc_conversion_py) {
             python test_pandoc_conversion_py
-          )
+          }
 
       - uses: actions/upload-artifact@v4
         with:
