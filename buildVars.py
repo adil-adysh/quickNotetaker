@@ -27,7 +27,7 @@ addon_info = {
 	# version
 	"addon_version": "1.3",
 	# Author(s)
-	"addon_author": "Eilana Benish <benish.ilana@gmail.com, Mohammad Suliman <mohmad.s93@gmail.com>",
+	"addon_author": "Adil Shaikh <ah.shaikh97@gmail.com>",
 	# URL for the add-on documentation support
 	"addon_url": None,
 	# Documentation file name
