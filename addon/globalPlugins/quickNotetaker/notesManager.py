@@ -33,8 +33,8 @@ class note(object):
 			self.docxPath = docxPath
 
 	def updateNote(self, newContent, docxPath):
-		if newContent is not None: #and self.content != newContent:
-			# for now, allow the user to edit the content even though the content hasn't changed to be able to overcome the title bug present in the first release 
+		if newContent is not None:  # and self.content != newContent:
+			# for now, allow the user to edit the content even though the content hasn't changed to be able to overcome the title bug present in the first release
 			self.title = getTitle(newContent)
 			self.content = newContent
 			self.lastEdited = self.prettyFormat(datetime.now())
@@ -72,7 +72,13 @@ def loadAllNotes():
 
 def deserializeNote(dict):
 	deserializedNote = note(
-		dict['id'], dict['title'], dict['content'], dict['lastEdited'], dict['lastEditedStamp'], dict['docxPath'])
+		dict["id"],
+		dict["title"],
+		dict["content"],
+		dict["lastEdited"],
+		dict["lastEditedStamp"],
+		dict["docxPath"],
+	)
 	return deserializedNote
 
 
@@ -84,8 +90,7 @@ def _dumpAllNotes(allNotes):
 	allNotes.sort(key=lambda note: note.lastEditedStamp, reverse=True)
 	try:
 		with open(DATA_FILE_PATH, mode="w", encoding="utf8") as file:
-			json.dump([note.__dict__ for note in allNotes],
-					  file, indent=4, ensure_ascii=False)
+			json.dump([note.__dict__ for note in allNotes], file, indent=4, ensure_ascii=False)
 	except:
 		with open(dataFilePath, mode="w", encoding="utf8") as file:
 			file.write(allContent)

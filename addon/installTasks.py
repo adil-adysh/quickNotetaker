@@ -10,6 +10,7 @@ import logging
 import os
 import shutil
 import gettext
+
 _ = gettext.gettext
 
 addonHandler.initTranslation()
@@ -26,6 +27,7 @@ logger = logging.getLogger("quickNotetaker.installTasks")
 PANDOC_RELEASE_URL = "https://github.com/jgm/pandoc/releases/latest"
 
 user_pandoc_path = config.conf["quickNotetaker"].get("pandocUserPath", "")
+
 
 # Helper to locate pandoc
 def locate_pandoc(user_path=None):
@@ -50,6 +52,7 @@ def locate_pandoc(user_path=None):
 	logger.warning("Pandoc not found in user path, add-on lib, or system PATH.")
 	return None
 
+
 def onInstall():
 	if not config.conf["quickNotetaker"].get("showPandocPromptOnInstall", True):
 		return
@@ -64,9 +67,12 @@ def onInstall():
 		logger.error("Could not import gui.message. Pandoc prompt will not be shown.")
 		return
 	result = MessageDialog.ask(
-		_("Pandoc is required for QuickNotetaker to convert documents. Would you like to open the Pandoc releases page to download it?"),
-		_("Pandoc Not Found")
+		_(
+			"Pandoc is required for QuickNotetaker to convert documents. Would you like to open the Pandoc releases page to download it?"
+		),
+		_("Pandoc Not Found"),
 	)
 	if result == getattr(ReturnCode, "YES", 1):
 		import webbrowser
+
 		webbrowser.open(PANDOC_RELEASE_URL)

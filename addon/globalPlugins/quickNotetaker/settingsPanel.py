@@ -14,10 +14,7 @@ from . import addonConfig
 import addonHandler
 
 
-
-
 class QuickNotetakerPanel(SettingsPanel):
-
 	# Translators: the title of the Quick Notetaker panel in NVDA's settings
 	title = _("Quick Notetaker")
 
@@ -25,74 +22,58 @@ class QuickNotetakerPanel(SettingsPanel):
 		sHelper = guiHelper.BoxSizerHelper(self, sizer=settingsSizer)
 		# Translators: the label of the control in Quick Notetaker settings panel for choosing a default folder where the add-on documents will be saved
 		directoryGroupText = _("Default documents directory:")
-		groupSizer = wx.StaticBoxSizer(
-			wx.VERTICAL, self, label=directoryGroupText)
-		groupHelper = sHelper.addItem(
-			guiHelper.BoxSizerHelper(self, sizer=groupSizer))
+		groupSizer = wx.StaticBoxSizer(wx.VERTICAL, self, label=directoryGroupText)
+		groupHelper = sHelper.addItem(guiHelper.BoxSizerHelper(self, sizer=groupSizer))
 		groupBox = groupSizer.GetStaticBox()
 		# Translators: the label of a button to browse for a directory
 		browseText = _("Browse...")
 		dirDialogTitle = _(
 			# Translators: The title of the dialog presented when browsing for the directory where quick notetaker documents will be stored
-			"Select a default directory where the documents of Quick Notetaker will be stored")
-		directoryPathHelper = guiHelper.PathSelectionHelper(
-			groupBox, browseText, dirDialogTitle)
+			"Select a default directory where the documents of Quick Notetaker will be stored"
+		)
+		directoryPathHelper = guiHelper.PathSelectionHelper(groupBox, browseText, dirDialogTitle)
 		directoryEntryControl = groupHelper.addItem(directoryPathHelper)
 		self.documentDirectoryEdit = directoryEntryControl.pathControl
-		self.documentDirectoryEdit.Value = addonConfig.getValue(
-			"notesDocumentsPath")
+		self.documentDirectoryEdit.Value = addonConfig.getValue("notesDocumentsPath")
 		askWhereToSaveDocxText = _(
 			# Translators: the label of a check box in Quick Notetaker settings panel
-			"Ask me each time &where to save the note's corresponding Microsoft Word document")
-		self.askWhereToSaveDocxCheckbox = sHelper.addItem(
-			wx.CheckBox(self, label=askWhereToSaveDocxText))
-		self.askWhereToSaveDocxCheckbox.Value = addonConfig.getValue(
-			"askWhereToSaveDocx")
+			"Ask me each time &where to save the note's corresponding Microsoft Word document"
+		)
+		self.askWhereToSaveDocxCheckbox = sHelper.addItem(wx.CheckBox(self, label=askWhereToSaveDocxText))
+		self.askWhereToSaveDocxCheckbox.Value = addonConfig.getValue("askWhereToSaveDocx")
 		openFileAfterCreationText = _(
 			# Translators: the label of a check box in Quick Notetaker settings panel
-			"&Open the note's corresponding Microsoft Word document after saving or updating")
-		self.openAfterCreationCheckbox = sHelper.addItem(
-			wx.CheckBox(self, label=openFileAfterCreationText))
-		self.openAfterCreationCheckbox.Value = addonConfig.getValue(
-			"openFileAfterCreation")
+			"&Open the note's corresponding Microsoft Word document after saving or updating"
+		)
+		self.openAfterCreationCheckbox = sHelper.addItem(wx.CheckBox(self, label=openFileAfterCreationText))
+		self.openAfterCreationCheckbox.Value = addonConfig.getValue("openFileAfterCreation")
 		captureActiveWindowTitleText = _(
 			# Translators: the label of a check box in Quick Notetaker settings panel
-			"&Capture the active window title when creating a new note")
+			"&Capture the active window title when creating a new note"
+		)
 		self.captureActiveWindowTitleCheckbox = sHelper.addItem(
-			wx.CheckBox(self, label=captureActiveWindowTitleText))
-		self.captureActiveWindowTitleCheckbox.Value = addonConfig.getValue(
-			"captureActiveWindowTitle")
+			wx.CheckBox(self, label=captureActiveWindowTitleText)
+		)
+		self.captureActiveWindowTitleCheckbox.Value = addonConfig.getValue("captureActiveWindowTitle")
 		rememberTakerSizeAndPosText = _(
 			# Translators: the label of a check box in Quick Notetaker settings panel
-			"&Remember the note taker window size and position")
+			"&Remember the note taker window size and position"
+		)
 		self.rememberTakerSizeAndPosCheckbox = sHelper.addItem(
-			wx.CheckBox(self, label=rememberTakerSizeAndPosText))
-		self.rememberTakerSizeAndPosCheckbox.Value = addonConfig.getValue(
-			"rememberTakerSizeAndPos")
+			wx.CheckBox(self, label=rememberTakerSizeAndPosText)
+		)
+		self.rememberTakerSizeAndPosCheckbox.Value = addonConfig.getValue("rememberTakerSizeAndPos")
 		autoAlignTextText = _(
 			# Translators: the label of a check box in Quick Notetaker settings panel
-			"Au&to align text when editing notes (relevant for RTL languages)")
-		self.autoAlignTextCheckbox = sHelper.addItem(
-			wx.CheckBox(self, label=autoAlignTextText))
-		self.autoAlignTextCheckbox.Value = addonConfig.getValue(
-			"autoAlignText")
+			"Au&to align text when editing notes (relevant for RTL languages)"
+		)
+		self.autoAlignTextCheckbox = sHelper.addItem(wx.CheckBox(self, label=autoAlignTextText))
+		self.autoAlignTextCheckbox.Value = addonConfig.getValue("autoAlignText")
 
 	def onSave(self):
-		addonConfig.setValue(
-			"notesDocumentsPath",
-			os.path.normpath(self.documentDirectoryEdit.Value))
-		addonConfig.setValue(
-			"askWhereToSaveDocx",
-			self.askWhereToSaveDocxCheckbox.Value)
-		addonConfig.setValue(
-			"openFileAfterCreation",
-			self.openAfterCreationCheckbox.Value)
-		addonConfig.setValue(
-			"captureActiveWindowTitle",
-			self.captureActiveWindowTitleCheckbox.Value)
-		addonConfig.setValue(
-			"rememberTakerSizeAndPos",
-			self.rememberTakerSizeAndPosCheckbox.Value)
-		addonConfig.setValue(
-			"autoAlignText",
-			self.autoAlignTextCheckbox.Value)
+		addonConfig.setValue("notesDocumentsPath", os.path.normpath(self.documentDirectoryEdit.Value))
+		addonConfig.setValue("askWhereToSaveDocx", self.askWhereToSaveDocxCheckbox.Value)
+		addonConfig.setValue("openFileAfterCreation", self.openAfterCreationCheckbox.Value)
+		addonConfig.setValue("captureActiveWindowTitle", self.captureActiveWindowTitleCheckbox.Value)
+		addonConfig.setValue("rememberTakerSizeAndPos", self.rememberTakerSizeAndPosCheckbox.Value)
+		addonConfig.setValue("autoAlignText", self.autoAlignTextCheckbox.Value)

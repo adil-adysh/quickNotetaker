@@ -138,8 +138,9 @@ def translatedManifestGenerator(target, source, env, for_signature):
 	dir = os.path.abspath(os.path.join(os.path.dirname(str(source[0])), ".."))
 	lang = os.path.basename(dir)
 	action = env.Action(
-		lambda target, source, env: generateTranslatedManifest(source[1].abspath, lang, target[0].abspath)
-		and None,
+		lambda target, source, env: (
+			generateTranslatedManifest(source[1].abspath, lang, target[0].abspath) and None
+		),
 		lambda target, source, env: f"Generating translated manifest {target[0]}",
 	)
 	return action

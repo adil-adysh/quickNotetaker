@@ -23,8 +23,9 @@ addonHandler.initTranslation()
 
 
 def saveAsWord(mdContent, filePath, callback, *args):
-	saveThread = threading.Thread(target=_saveAsWord, args=(
-		mdContent, filePath, callback, *args), daemon=True)
+	saveThread = threading.Thread(
+		target=_saveAsWord, args=(mdContent, filePath, callback, *args), daemon=True
+	)
 	saveThread.start()
 
 
@@ -37,11 +38,11 @@ def _saveAsWord(mdContent, filePath, callBack, *args):
 	dirWasChanged = False
 	if filePath == "":
 		outputFilePath, dirWasChanged = _findAvailablePath(
-			addonConfig.getValue("notesDocumentsPath"), title, "docx")
+			addonConfig.getValue("notesDocumentsPath"), title, "docx"
+		)
 	else:
 		outputFilePath = filePath
-	outputFilePath, result = _runPandocCommand(
-		title, outputFilePath, isRtlDocument(mdContent))
+	outputFilePath, result = _runPandocCommand(title, outputFilePath, isRtlDocument(mdContent))
 	dirWasChanged = dirWasChanged or result
 	if callBack:
 		callBack(outputFilePath, dirWasChanged, mdContent, *args)
@@ -98,7 +99,14 @@ def _runPandocCommand(fileTitle, outputFilePath, isHtmlDocument):
 
 def openInWord(filePath, callback, *args):
 	openThread = threading.Thread(
-		target=_openInWord, args=(filePath, callback, *args,), daemon=True)
+		target=_openInWord,
+		args=(
+			filePath,
+			callback,
+			*args,
+		),
+		daemon=True,
+	)
 	openThread.start()
 
 
@@ -121,8 +129,7 @@ def _findAvailablePath(dirName, fileTitle, extension):
 		try:
 			os.mkdir(dirName)
 		except:
-			log.debug(
-				"The user default directory name is invalid! Reverting to the user default one.")
+			log.debug("The user default directory name is invalid! Reverting to the user default one.")
 			if not os.path.isdir(DEFAULT_DOCUMENTS_PATH):
 				os.mkdir(DEFAULT_DOCUMENTS_PATH)
 			dirName = DEFAULT_DOCUMENTS_PATH
@@ -131,16 +138,14 @@ def _findAvailablePath(dirName, fileTitle, extension):
 	if not os.path.isfile(candidatePath):
 		return candidatePath, dirWasChanged
 	for i in range(50):
-		candidatePath = os.path.join(
-			dirName, f"{fileTitle} ({i + 1}).{extension}")
+		candidatePath = os.path.join(dirName, f"{fileTitle} ({i + 1}).{extension}")
 		if not os.path.isfile(candidatePath):
 			return candidatePath, dirWasChanged
 
 
 #: A regex for matching a URL
 #: Taken from https://gist.githubusercontent.com/nishad/ff5d02394afaf8cca5818f023fb88a21/raw/cc631328b9bfc0750379847ecbe415b4df69aa67/urlmarker.py
-urlPatternText =\
-	r"""(?i)\b((?:https?:(?:/{1,3}|[a-z0-9%])|[a-z0-9.\-]+[.](?:com|net|org|edu|gov|mil|aero|asia|biz|cat|coop|info|int|jobs|mobi|museum|name|post|pro|tel|travel|xxx|ac|ad|ae|af|ag|ai|al|am|an|ao|aq|ar|as|at|au|aw|ax|az|ba|bb|bd|be|bf|bg|bh|bi|bj|bm|bn|bo|br|bs|bt|bv|bw|by|bz|ca|cc|cd|cf|cg|ch|ci|ck|cl|cm|cn|co|cr|cs|cu|cv|cx|cy|cz|dd|de|dj|dk|dm|do|dz|ec|ee|eg|eh|er|es|et|eu|fi|fj|fk|fm|fo|fr|ga|gb|gd|ge|gf|gg|gh|gi|gl|gm|gn|gp|gq|gr|gs|gt|gu|gw|gy|hk|hm|hn|hr|ht|hu|id|ie|il|im|in|io|iq|ir|is|it|je|jm|jo|jp|ke|kg|kh|ki|km|kn|kp|kr|kw|ky|kz|la|lb|lc|li|lk|lr|ls|lt|lu|lv|ly|ma|mc|md|me|mg|mh|mk|ml|mm|mn|mo|mp|mq|mr|ms|mt|mu|mv|mw|mx|my|mz|na|nc|ne|nf|ng|ni|nl|no|np|nr|nu|nz|om|pa|pe|pf|pg|ph|pk|pl|pm|pn|pr|ps|pt|pw|py|qa|re|ro|rs|ru|rw|sa|sb|sc|sd|se|sg|sh|si|sj|Ja|sk|sl|sm|sn|so|sr|ss|st|su|sv|sx|sy|sz|tc|td|tf|tg|th|tj|tk|tl|tm|tn|to|tp|tr|tt|tv|tw|tz|ua|ug|uk|us|uy|uz|va|vc|ve|vg|vi|vn|vu|wf|ws|ye|yt|yu|za|zm|zw)/)(?:[^\s()<>{}\[\]]+|\([^\s()]*?\([^\s()]+\)[^\s()]*?\)|\([^\s]+?\))+(?:\([^\s()]*?\([^\s()]+\)[^\s()]*?\)|\([^\s]+?\)|[^\s`!()\[\]{};:'".,<>?«»“”‘’])|(?:(?<!@)[a-z0-9]+(?:[.\-][a-z0-9]+)*[.](?:com|net|org|edu|gov|mil|aero|asia|biz|cat|coop|info|int|jobs|mobi|museum|name|post|pro|tel|travel|xxx|ac|ad|ae|af|ag|ai|al|am|an|ao|aq|ar|as|at|au|aw|ax|az|ba|bb|bd|be|bf|bg|bh|bi|bj|bm|bn|bo|br|bs|bt|bv|bw|by|bz|ca|cc|cd|cf|cg|ch|ci|ck|cl|cm|cn|co|cr|cs|cu|cv|cx|cy|cz|dd|de|dj|dk|dm|do|dz|ec|ee|eg|eh|er|es|et|eu|fi|fj|fk|fm|fo|fr|ga|gb|gd|ge|gf|gg|gh|gi|gl|gm|gn|gp|gq|gr|gs|gt|gu|gw|gy|hk|hm|hn|hr|ht|hu|id|ie|il|im|in|io|iq|ir|is|it|je|jm|jo|jp|ke|kg|kh|ki|km|kn|kp|kr|kw|ky|kz|la|lb|lc|li|lk|lr|ls|lt|lu|lv|ly|ma|mc|md|me|mg|mh|mk|ml|mm|mn|mo|mp|mq|mr|ms|mt|mu|mv|mw|mx|my|mz|na|nc|ne|nf|ng|ni|nl|no|np|nr|nu|nz|om|pa|pe|pf|pg|ph|pk|pl|pm|pn|pr|ps|pt|pw|py|qa|re|ro|rs|ru|rw|sa|sb|sc|sd|se|sg|sh|si|sj|Ja|sk|sl|sm|sn|so|sr|ss|st|su|sv|sx|sy|sz|tc|td|tf|tg|th|tj|tk|tl|tm|tn|to|tp|tr|tt|tv|tw|tz|ua|ug|uk|us|uy|uz|va|vc|ve|vg|vi|vn|vu|wf|ws|ye|yt|yu|za|zm|zw)\b/?(?!@)))"""
+urlPatternText = r"""(?i)\b((?:https?:(?:/{1,3}|[a-z0-9%])|[a-z0-9.\-]+[.](?:com|net|org|edu|gov|mil|aero|asia|biz|cat|coop|info|int|jobs|mobi|museum|name|post|pro|tel|travel|xxx|ac|ad|ae|af|ag|ai|al|am|an|ao|aq|ar|as|at|au|aw|ax|az|ba|bb|bd|be|bf|bg|bh|bi|bj|bm|bn|bo|br|bs|bt|bv|bw|by|bz|ca|cc|cd|cf|cg|ch|ci|ck|cl|cm|cn|co|cr|cs|cu|cv|cx|cy|cz|dd|de|dj|dk|dm|do|dz|ec|ee|eg|eh|er|es|et|eu|fi|fj|fk|fm|fo|fr|ga|gb|gd|ge|gf|gg|gh|gi|gl|gm|gn|gp|gq|gr|gs|gt|gu|gw|gy|hk|hm|hn|hr|ht|hu|id|ie|il|im|in|io|iq|ir|is|it|je|jm|jo|jp|ke|kg|kh|ki|km|kn|kp|kr|kw|ky|kz|la|lb|lc|li|lk|lr|ls|lt|lu|lv|ly|ma|mc|md|me|mg|mh|mk|ml|mm|mn|mo|mp|mq|mr|ms|mt|mu|mv|mw|mx|my|mz|na|nc|ne|nf|ng|ni|nl|no|np|nr|nu|nz|om|pa|pe|pf|pg|ph|pk|pl|pm|pn|pr|ps|pt|pw|py|qa|re|ro|rs|ru|rw|sa|sb|sc|sd|se|sg|sh|si|sj|Ja|sk|sl|sm|sn|so|sr|ss|st|su|sv|sx|sy|sz|tc|td|tf|tg|th|tj|tk|tl|tm|tn|to|tp|tr|tt|tv|tw|tz|ua|ug|uk|us|uy|uz|va|vc|ve|vg|vi|vn|vu|wf|ws|ye|yt|yu|za|zm|zw)/)(?:[^\s()<>{}\[\]]+|\([^\s()]*?\([^\s()]+\)[^\s()]*?\)|\([^\s]+?\))+(?:\([^\s()]*?\([^\s()]+\)[^\s()]*?\)|\([^\s]+?\)|[^\s`!()\[\]{};:'".,<>?«»“”‘’])|(?:(?<!@)[a-z0-9]+(?:[.\-][a-z0-9]+)*[.](?:com|net|org|edu|gov|mil|aero|asia|biz|cat|coop|info|int|jobs|mobi|museum|name|post|pro|tel|travel|xxx|ac|ad|ae|af|ag|ai|al|am|an|ao|aq|ar|as|at|au|aw|ax|az|ba|bb|bd|be|bf|bg|bh|bi|bj|bm|bn|bo|br|bs|bt|bv|bw|by|bz|ca|cc|cd|cf|cg|ch|ci|ck|cl|cm|cn|co|cr|cs|cu|cv|cx|cy|cz|dd|de|dj|dk|dm|do|dz|ec|ee|eg|eh|er|es|et|eu|fi|fj|fk|fm|fo|fr|ga|gb|gd|ge|gf|gg|gh|gi|gl|gm|gn|gp|gq|gr|gs|gt|gu|gw|gy|hk|hm|hn|hr|ht|hu|id|ie|il|im|in|io|iq|ir|is|it|je|jm|jo|jp|ke|kg|kh|ki|km|kn|kp|kr|kw|ky|kz|la|lb|lc|li|lk|lr|ls|lt|lu|lv|ly|ma|mc|md|me|mg|mh|mk|ml|mm|mn|mo|mp|mq|mr|ms|mt|mu|mv|mw|mx|my|mz|na|nc|ne|nf|ng|ni|nl|no|np|nr|nu|nz|om|pa|pe|pf|pg|ph|pk|pl|pm|pn|pr|ps|pt|pw|py|qa|re|ro|rs|ru|rw|sa|sb|sc|sd|se|sg|sh|si|sj|Ja|sk|sl|sm|sn|so|sr|ss|st|su|sv|sx|sy|sz|tc|td|tf|tg|th|tj|tk|tl|tm|tn|to|tp|tr|tt|tv|tw|tz|ua|ug|uk|us|uy|uz|va|vc|ve|vg|vi|vn|vu|wf|ws|ye|yt|yu|za|zm|zw)\b/?(?!@)))"""
 
 
 def handleMdContent(mdContent):
@@ -228,8 +233,7 @@ def _makeRtl(content):
 	result = []
 	for paragraph in paragraphs:
 		if _isRtlParagraph(paragraph):
-			result.append(
-				'<div dir="rtl" markdown="1">\n%s\n</div>' % paragraph)
+			result.append('<div dir="rtl" markdown="1">\n%s\n</div>' % paragraph)
 		else:
 			result.append('<div markdown="1">\n%s\n</div>' % paragraph)
 	return "\n\n".join(result)
@@ -259,7 +263,10 @@ def handleTextAlignment(text, currentAlignment):
 		return Align.NO_CHANGE
 	if unicodedata.bidirectional(lettersOnly[0]) in rtlClasses and currentAlignment != wx.Layout_RightToLeft:
 		return Align.ALIGN_TO_RIGHT
-	elif not unicodedata.bidirectional(lettersOnly[0]) in rtlClasses and currentAlignment != wx.Layout_LeftToRight:
+	elif (
+		not unicodedata.bidirectional(lettersOnly[0]) in rtlClasses
+		and currentAlignment != wx.Layout_LeftToRight
+	):
 		return Align.ALIGN_TO_LEFT
 	else:
 		return Align.NO_CHANGE
