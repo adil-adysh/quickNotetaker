@@ -27,7 +27,13 @@ def initialize():
 
 
 def getValue(key):
-	return config.conf["quickNotetaker"][key]
+	try:
+		return config.conf["quickNotetaker"][key]
+	except KeyError:
+		# Config key doesn't exist, likely upgrading from older version
+		# Re-initialize config to ensure all defaults are set
+		initialize()
+		return config.conf["quickNotetaker"][key]
 
 
 def setValue(key, value):

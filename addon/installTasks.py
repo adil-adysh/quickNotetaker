@@ -18,6 +18,16 @@ addonHandler.initTranslation()
 confspec = {
 	"pandocUserPath": "string(default='')",
 	"showPandocPromptOnInstall": "boolean(default=True)",
+	"notesDocumentsPath": f"string(default={os.path.normpath(os.path.expanduser('~/documents/quickNotetaker'))})",
+	"askWhereToSaveDocx": "boolean(default=False)",
+	"openFileAfterCreation": "boolean(default=False)",
+	"captureActiveWindowTitle": "boolean(default=True)",
+	"rememberTakerSizeAndPos": "boolean(default=False)",
+	"autoAlignText": "boolean(default=True)",
+	"takerXPos": "integer(default=-1)",
+	"takerYPos": "integer(default=-1)",
+	"takerWidth": "integer(default=500)",
+	"takerHeight": "integer(default=500)",
 }
 config.conf.spec.setdefault("quickNotetaker", {})
 config.conf.spec["quickNotetaker"].update(confspec)
