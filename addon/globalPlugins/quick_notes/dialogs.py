@@ -1,6 +1,6 @@
 # dialogs.py
 # -*- coding: utf-8 -*-
-# A part from Quick Notetaker add-on
+# A part from Quick Notes add-on
 # Copyright (C) 2022 NV Access Limited, Mohammad Suliman, Eilana Benish
 # This file is covered by the GNU General Public License.
 # See the file COPYING for more details.
@@ -60,10 +60,10 @@ class NoteTakerDialog(wx.Dialog):
 	def _getDialogSizeAndPosition(self):
 		dialogSize = wx.Size(500, 500)
 		dialogPos = wx.DefaultPosition
-		if addonConfig.getValue("rememberTakerSizeAndPos"):
-			log.debug("Setting Quick Notetaker Notetaker window position and size")
-			dialogSize = wx.Size(addonConfig.getValue("takerWidth"), addonConfig.getValue("takerHeight"))
-			dialogPos = wx.Point(x=addonConfig.getValue("takerXPos"), y=addonConfig.getValue("takerYPos"))
+		if addonConfig.getValue("rememberNotesWindowSizeAndPos"):
+			log.debug("Setting Quick Notes Notetaker window position and size")
+			dialogSize = wx.Size(addonConfig.getValue("notesWidth"), addonConfig.getValue("notesHeight"))
+			dialogPos = wx.Point(x=addonConfig.getValue("notesXPos"), y=addonConfig.getValue("notesYPos"))
 		return dialogSize, dialogPos
 
 	def __init__(self, currentNote=None, noteTitle=None):
@@ -72,8 +72,8 @@ class NoteTakerDialog(wx.Dialog):
 		NoteTakerDialog._instance = weakref.ref(self)
 
 		dialogSize, dialogPos = self._getDialogSizeAndPosition()
-		# Translators: the title for the Quick Notetaker Notetaker window
-		title = _("Notetaker - Quick Notetaker")
+		# Translators: the title for the Quick Notes Notetaker window
+		title = _("Notetaker - Quick Notes")
 		if noteTitle:
 			title = f"{noteTitle} - {title}"
 
@@ -209,11 +209,11 @@ class NoteTakerDialog(wx.Dialog):
 
 	def _savePositionInformation(self):
 		position = self.GetPosition()
-		addonConfig.setValue("takerXPos", position.x)
-		addonConfig.setValue("takerYPos", position.y)
+		addonConfig.setValue("notesXPos", position.x)
+		addonConfig.setValue("notesYPos", position.y)
 		size = self.GetSize()
-		addonConfig.setValue("takerWidth", size.width)
-		addonConfig.setValue("takerHeight", size.height)
+		addonConfig.setValue("notesWidth", size.width)
+		addonConfig.setValue("notesHeight", size.height)
 
 	def onOpenManager(self, evt):
 		global notesManagerInstance
@@ -318,7 +318,7 @@ class NotesManagerDialog(
 		NotesManagerDialog._instance = weakref.ref(self)
 
 		# Translators: The title of the Notes Manager dialog
-		title = _("Notes Manager - Quick Notetaker")
+		title = _("Notes Manager - Quick Notes")
 		super().__init__(
 			gui.mainFrame,
 			title=title,
@@ -628,7 +628,7 @@ def notifyDirWasChanged(dirWasChanged):
 		gui.messageBox(
 			# Translators: the message which tells the user that the directory they tried to save the file in is no longer available,
 			# so the file was saved in the user default one if this was possible.
-			# If not, the file was saved in the quick Notetaker directory in documents folder
+			# If not, the file was saved in the Quick Notes directory in documents folder
 			_(
 				"The saved path for the Microsoft Word document no longer  exists! The document was saved in the default directory for the ad-on!"
 			),
@@ -642,7 +642,7 @@ def notifyDirWasChanged(dirWasChanged):
 
 def askUserWhereToSave(parent, noteContent):
 	# Translators: The title of the dialog which allows the user to choose the folder where they want to save the note's corresponding Word document.
-	# This dialog is displayed to the user if the option of "Ask me each time where to save the note's corresponding Word document" in quick Notetaker settings is checked
+	# This dialog is displayed to the user if the option of "Ask me each time where to save the note's corresponding Word document" in Quick Notes settings is checked
 	with wx.DirDialog(
 		parent,
 		_("Select the folder where the document will be saved"),

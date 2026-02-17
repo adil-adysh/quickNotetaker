@@ -1,6 +1,6 @@
 # addonConfig.py
 # -*- coding: utf-8 -*-
-# A part from Quick Notetaker add-on
+# A part from Quick Notes add-on
 # Copyright (C) 2022 NV Access Limited, Mohammad Suliman, Eilana Benish
 # This file is covered by the GNU General Public License.
 # See the file COPYING for more details.
@@ -17,13 +17,13 @@ def initialize():
 		"askWhereToSaveDocx": "boolean(default=False)",
 		"openFileAfterCreation": "boolean(default=False)",
 		"captureActiveWindowTitle": "boolean(default=True)",
-		"rememberTakerSizeAndPos": "boolean(default=False)",
+		"rememberNotesWindowSizeAndPos": "boolean(default=False)",
 		"autoAlignText": "boolean(default=true)",
 		"pandocUserPath": "string(default='')",
-		"takerXPos": f"integer(default={wx.DefaultPosition.x})",
-		"takerYPos": f"integer(default={wx.DefaultPosition.y})",
-		"takerWidth": "integer(default=500)",
-		"takerHeight": "integer(default=500)",
+		"notesXPos": f"integer(default={wx.DefaultPosition.x})",
+		"notesYPos": f"integer(default={wx.DefaultPosition.y})",
+		"notesWidth": "integer(default=500)",
+		"notesHeight": "integer(default=500)",
 	}
 	config.conf.spec["quick_notes"] = configSpec
 

@@ -1,6 +1,6 @@
 # settings.py
 # -*- coding: utf-8 -*-
-# A part from Quick Notetaker add-on
+# A part from Quick Notes add-on
 # Copyright (C) 2022 NV Access Limited, Mohammad Suliman, Eilana Benish
 # This file is covered by the GNU General Public License.
 # See the file COPYING for more details.
@@ -14,12 +14,12 @@ from . import addonConfig
 
 
 class QuickNotesPanel(SettingsPanel):
-	# Translators: the title of the Quick Notetaker panel in NVDA's settings
-	title = _("Quick Notetaker")
+	# Translators: the title of the Quick Notes panel in NVDA's settings
+	title = _("Quick Notes")
 
 	def makeSettings(self, settingsSizer):
 		sHelper = guiHelper.BoxSizerHelper(self, sizer=settingsSizer)
-		# Translators: the label of the control in Quick Notetaker settings panel for choosing a folder where notes data will be stored
+		# Translators: the label of the control in Quick Notes settings panel for choosing a folder where notes data will be stored
 		notesDataGroupText = _("&Notes data directory:")
 		groupSizer = wx.StaticBoxSizer(wx.VERTICAL, self, label=notesDataGroupText)
 		groupHelper = sHelper.addItem(guiHelper.BoxSizerHelper(self, sizer=groupSizer))
@@ -27,14 +27,14 @@ class QuickNotesPanel(SettingsPanel):
 		# Translators: the label of a button to browse for a directory
 		browseText = _("Browse...")
 		notesDataDirDialogTitle = _(
-			# Translators: The title of the dialog presented when browsing for the directory where quick notetaker notes data will be stored
-			"Select a directory where the notes data of Quick Notetaker will be stored"
+			# Translators: The title of the dialog presented when browsing for the directory where Quick Notes notes data will be stored
+			"Select a directory where the notes data of Quick Notes will be stored"
 		)
 		notesDataPathHelper = guiHelper.PathSelectionHelper(groupBox, browseText, notesDataDirDialogTitle)
 		notesDataEntryControl = groupHelper.addItem(notesDataPathHelper)
 		self.notesDataDirectoryEdit = notesDataEntryControl.pathControl
 		self.notesDataDirectoryEdit.Value = addonConfig.getValue("notesDataPath")
-		# Translators: the label of the control in Quick Notetaker settings panel for choosing a default folder where the add-on documents will be saved
+		# Translators: the label of the control in Quick Notes settings panel for choosing a default folder where the add-on documents will be saved
 		directoryGroupText = _("&Default documents directory:")
 		groupSizer = wx.StaticBoxSizer(wx.VERTICAL, self, label=directoryGroupText)
 		groupHelper = sHelper.addItem(guiHelper.BoxSizerHelper(self, sizer=groupSizer))
@@ -42,50 +42,52 @@ class QuickNotesPanel(SettingsPanel):
 		# Translators: the label of a button to browse for a directory
 		browseText = _("Browse...")
 		dirDialogTitle = _(
-			# Translators: The title of the dialog presented when browsing for the directory where quick notetaker documents will be stored
-			"Select a default directory where the documents of Quick Notetaker will be stored"
+			# Translators: The title of the dialog presented when browsing for the directory where Quick Notes documents will be stored
+			"Select a default directory where the documents of Quick Notes will be stored"
 		)
 		directoryPathHelper = guiHelper.PathSelectionHelper(groupBox, browseText, dirDialogTitle)
 		directoryEntryControl = groupHelper.addItem(directoryPathHelper)
 		self.documentDirectoryEdit = directoryEntryControl.pathControl
 		self.documentDirectoryEdit.Value = addonConfig.getValue("notesDocumentsPath")
 		askWhereToSaveDocxText = _(
-			# Translators: the label of a check box in Quick Notetaker settings panel
+			# Translators: the label of a check box in Quick Notes settings panel
 			"Ask me each time &where to save the note's corresponding Microsoft Word document"
 		)
 		self.askWhereToSaveDocxCheckbox = sHelper.addItem(wx.CheckBox(self, label=askWhereToSaveDocxText))
 		self.askWhereToSaveDocxCheckbox.Value = addonConfig.getValue("askWhereToSaveDocx")
 		openFileAfterCreationText = _(
-			# Translators: the label of a check box in Quick Notetaker settings panel
+			# Translators: the label of a check box in Quick Notes settings panel
 			"&Open the note's corresponding Microsoft Word document after saving or updating"
 		)
 		self.openAfterCreationCheckbox = sHelper.addItem(wx.CheckBox(self, label=openFileAfterCreationText))
 		self.openAfterCreationCheckbox.Value = addonConfig.getValue("openFileAfterCreation")
 		captureActiveWindowTitleText = _(
-			# Translators: the label of a check box in Quick Notetaker settings panel
+			# Translators: the label of a check box in Quick Notes settings panel
 			"&Capture the active window title when creating a new note"
 		)
 		self.captureActiveWindowTitleCheckbox = sHelper.addItem(
 			wx.CheckBox(self, label=captureActiveWindowTitleText)
 		)
 		self.captureActiveWindowTitleCheckbox.Value = addonConfig.getValue("captureActiveWindowTitle")
-		rememberTakerSizeAndPosText = _(
-			# Translators: the label of a check box in Quick Notetaker settings panel
-			"&Remember the note taker window size and position"
+		rememberNotesWindowSizeAndPosText = _(
+			# Translators: the label of a check box in Quick Notes settings panel
+			"&Remember the notes dialog window size and position"
 		)
-		self.rememberTakerSizeAndPosCheckbox = sHelper.addItem(
-			wx.CheckBox(self, label=rememberTakerSizeAndPosText)
+		self.rememberNotesWindowSizeAndPosCheckbox = sHelper.addItem(
+			wx.CheckBox(self, label=rememberNotesWindowSizeAndPosText)
 		)
-		self.rememberTakerSizeAndPosCheckbox.Value = addonConfig.getValue("rememberTakerSizeAndPos")
+		self.rememberNotesWindowSizeAndPosCheckbox.Value = addonConfig.getValue(
+			"rememberNotesWindowSizeAndPos"
+		)
 		autoAlignTextText = _(
-			# Translators: the label of a check box in Quick Notetaker settings panel
+			# Translators: the label of a check box in Quick Notes settings panel
 			"Au&to align text when editing notes (relevant for RTL languages)"
 		)
 		self.autoAlignTextCheckbox = sHelper.addItem(wx.CheckBox(self, label=autoAlignTextText))
 		self.autoAlignTextCheckbox.Value = addonConfig.getValue("autoAlignText")
 
 	def onSave(self):
-		log.debug("Saving Quick Notetaker settings")
+		log.debug("Saving Quick Notes settings")
 		oldNotesDataPath = addonConfig.getValue("notesDataPath")
 		newNotesDataPath = os.path.normpath(self.notesDataDirectoryEdit.Value)
 
@@ -117,9 +119,11 @@ class QuickNotesPanel(SettingsPanel):
 		addonConfig.setValue("askWhereToSaveDocx", self.askWhereToSaveDocxCheckbox.Value)
 		addonConfig.setValue("openFileAfterCreation", self.openAfterCreationCheckbox.Value)
 		addonConfig.setValue("captureActiveWindowTitle", self.captureActiveWindowTitleCheckbox.Value)
-		addonConfig.setValue("rememberTakerSizeAndPos", self.rememberTakerSizeAndPosCheckbox.Value)
+		addonConfig.setValue(
+			"rememberNotesWindowSizeAndPos", self.rememberNotesWindowSizeAndPosCheckbox.Value
+		)
 		addonConfig.setValue("autoAlignText", self.autoAlignTextCheckbox.Value)
-		log.debug("Quick Notetaker settings saved successfully")
+		log.debug("Quick Notes settings saved successfully")
 
 	def _migrateNotesData(self, oldPath, newPath):
 		"""Migrate notes data from old directory to new directory.

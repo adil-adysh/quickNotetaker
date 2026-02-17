@@ -1,6 +1,6 @@
 # -*- coding: UTF-8 -*-
 """
-NVDA Add-on: quickNotetaker
+NVDA Add-on: Quick Notes
 installTasks to check for Pandoc in system path and guide the user to download if not found.
 """
 
@@ -22,12 +22,12 @@ confspec = {
 	"askWhereToSaveDocx": "boolean(default=False)",
 	"openFileAfterCreation": "boolean(default=False)",
 	"captureActiveWindowTitle": "boolean(default=True)",
-	"rememberTakerSizeAndPos": "boolean(default=False)",
+	"rememberNotesWindowSizeAndPos": "boolean(default=False)",
 	"autoAlignText": "boolean(default=True)",
-	"takerXPos": "integer(default=-1)",
-	"takerYPos": "integer(default=-1)",
-	"takerWidth": "integer(default=500)",
-	"takerHeight": "integer(default=500)",
+	"notesXPos": "integer(default=-1)",
+	"notesYPos": "integer(default=-1)",
+	"notesWidth": "integer(default=500)",
+	"notesHeight": "integer(default=500)",
 }
 config.conf.spec.setdefault("quick_notes", {})
 config.conf.spec["quick_notes"].update(confspec)
@@ -78,7 +78,7 @@ def onInstall():
 		return
 	result = MessageDialog.ask(
 		_(
-			"Pandoc is required for QuickNotetaker to convert documents. Would you like to open the Pandoc releases page to download it?"
+			"Pandoc is required for Quick Notes to convert documents. Would you like to open the Pandoc releases page to download it?"
 		),
 		_("Pandoc Not Found"),
 	)

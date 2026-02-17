@@ -1,6 +1,6 @@
 # helpers.py
 # -*- coding: utf-8 -*-
-# A part from Quick Notetaker add-on
+# A part from Quick Notes add-on
 # Copyright (C) 2022 NV Access Limited, Mohammad Suliman, Eilana Benish
 # This file is covered by the GNU General Public License.
 # See the file COPYING for more details.

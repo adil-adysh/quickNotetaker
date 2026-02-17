@@ -1,11 +1,11 @@
 [project]
-name = "quickNotetaker"
+name = "quick_notes"
 version = "1.4"
 description = "A note taker for NVDA"
 requires-python = ">=3.13"
 
 [tool.poetry]
-name = "quickNotetaker"
+name = "quick_notes"
 version = "1.4"
 description = "A note taker for NVDA"
 package-mode = false
