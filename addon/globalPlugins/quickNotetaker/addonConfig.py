@@ -12,12 +12,14 @@ import wx
 
 def initialize():
 	configSpec = {
+		"notesDataPath": f"string(default={os.path.normpath(os.path.join(os.path.expanduser('~'), 'appdata', 'roaming', 'nvda', 'Quick Notetaker data')) if os.name == 'nt' else os.path.normpath(os.path.join(os.path.expanduser('~'), '.config', 'nvda', 'Quick Notetaker data'))})",
 		"notesDocumentsPath": f"string(default={os.path.normpath(os.path.expanduser('~/documents/quickNotetaker'))})",
 		"askWhereToSaveDocx": "boolean(default=False)",
 		"openFileAfterCreation": "boolean(default=False)",
 		"captureActiveWindowTitle": "boolean(default=True)",
 		"rememberTakerSizeAndPos": "boolean(default=False)",
 		"autoAlignText": "boolean(default=true)",
+		"pandocUserPath": "string(default='')",
 		"takerXPos": f"integer(default={wx.DefaultPosition.x})",
 		"takerYPos": f"integer(default={wx.DefaultPosition.y})",
 		"takerWidth": "integer(default=500)",

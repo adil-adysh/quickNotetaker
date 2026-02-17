@@ -9,7 +9,7 @@ import os
 from logHandler import log
 from datetime import datetime
 import json
-from .constants import DATA_DIR_PATH, DATA_FILE_PATH
+from .constants import get_data_dir_path, get_data_file_path
 from .helpers import getTitle
 
 
@@ -47,17 +47,19 @@ class note(object):
 
 
 def initialize():
-	if os.path.isfile(DATA_FILE_PATH):
+	data_file_path = get_data_file_path()
+	data_dir_path = get_data_dir_path()
+	if os.path.isfile(data_file_path):
 		return
-	log.debug(f"Creating a new file {os.path.abspath(DATA_FILE_PATH)}")
+	log.debug(f"Creating a new file {os.path.abspath(data_file_path)}")
 	try:
-		if not os.path.isdir(DATA_DIR_PATH):
-			os.mkdir(DATA_DIR_PATH)
-	except:
+		if not os.path.isdir(data_dir_path):
+			os.makedirs(data_dir_path, exist_ok=True)
+	except Exception:
 		log.error("Can't create the data file directory!")
 		raise
 	try:
-		with open(DATA_FILE_PATH, mode="x", encoding="utf8") as file:
+		with open(data_file_path, mode="x", encoding="utf8") as file:
 			file.write("[]")
 	except:
 		log.error("Can't create data file")
@@ -65,7 +67,8 @@ def initialize():
 
 
 def loadAllNotes():
-	with open(DATA_FILE_PATH, mode="r", encoding="utf8") as file:
+	data_file_path = get_data_file_path()
+	with open(data_file_path, mode="r", encoding="utf8") as file:
 		allNotes = json.load(file, object_hook=deserializeNote)
 	return allNotes
 
@@ -83,16 +86,17 @@ def deserializeNote(dict):
 
 
 def _dumpAllNotes(allNotes):
+	data_file_path = get_data_file_path()
 	# Backup the file content
-	with open(DATA_FILE_PATH, mode="r", encoding="utf8") as file:
+	with open(data_file_path, mode="r", encoding="utf8") as file:
 		allContent = file.read()
 	# Sort all notes according to the last edited stamp in descending order
 	allNotes.sort(key=lambda note: note.lastEditedStamp, reverse=True)
 	try:
-		with open(DATA_FILE_PATH, mode="w", encoding="utf8") as file:
+		with open(data_file_path, mode="w", encoding="utf8") as file:
 			json.dump([note.__dict__ for note in allNotes], file, indent=4, ensure_ascii=False)
 	except:
-		with open(DATA_FILE_PATH, mode="w", encoding="utf8") as file:
+		with open(data_file_path, mode="w", encoding="utf8") as file:
 			file.write(allContent)
 		raise
 

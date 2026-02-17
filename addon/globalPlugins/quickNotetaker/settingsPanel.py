@@ -18,8 +18,23 @@ class QuickNotetakerPanel(SettingsPanel):
 
 	def makeSettings(self, settingsSizer):
 		sHelper = guiHelper.BoxSizerHelper(self, sizer=settingsSizer)
+		# Translators: the label of the control in Quick Notetaker settings panel for choosing a folder where notes data will be stored
+		notesDataGroupText = _("&Notes data directory:")
+		groupSizer = wx.StaticBoxSizer(wx.VERTICAL, self, label=notesDataGroupText)
+		groupHelper = sHelper.addItem(guiHelper.BoxSizerHelper(self, sizer=groupSizer))
+		groupBox = groupSizer.GetStaticBox()
+		# Translators: the label of a button to browse for a directory
+		browseText = _("Browse...")
+		notesDataDirDialogTitle = _(
+			# Translators: The title of the dialog presented when browsing for the directory where quick notetaker notes data will be stored
+			"Select a directory where the notes data of Quick Notetaker will be stored"
+		)
+		notesDataPathHelper = guiHelper.PathSelectionHelper(groupBox, browseText, notesDataDirDialogTitle)
+		notesDataEntryControl = groupHelper.addItem(notesDataPathHelper)
+		self.notesDataDirectoryEdit = notesDataEntryControl.pathControl
+		self.notesDataDirectoryEdit.Value = addonConfig.getValue("notesDataPath")
 		# Translators: the label of the control in Quick Notetaker settings panel for choosing a default folder where the add-on documents will be saved
-		directoryGroupText = _("Default documents directory:")
+		directoryGroupText = _("&Default documents directory:")
 		groupSizer = wx.StaticBoxSizer(wx.VERTICAL, self, label=directoryGroupText)
 		groupHelper = sHelper.addItem(guiHelper.BoxSizerHelper(self, sizer=groupSizer))
 		groupBox = groupSizer.GetStaticBox()
@@ -69,9 +84,38 @@ class QuickNotetakerPanel(SettingsPanel):
 		self.autoAlignTextCheckbox.Value = addonConfig.getValue("autoAlignText")
 
 	def onSave(self):
+		oldNotesDataPath = addonConfig.getValue("notesDataPath")
+		newNotesDataPath = os.path.normpath(self.notesDataDirectoryEdit.Value)
+
+		# Migrate notes data if the path changed
+		if oldNotesDataPath != newNotesDataPath:
+			self._migrateNotesData(oldNotesDataPath, newNotesDataPath)
+
+		addonConfig.setValue("notesDataPath", newNotesDataPath)
 		addonConfig.setValue("notesDocumentsPath", os.path.normpath(self.documentDirectoryEdit.Value))
 		addonConfig.setValue("askWhereToSaveDocx", self.askWhereToSaveDocxCheckbox.Value)
 		addonConfig.setValue("openFileAfterCreation", self.openAfterCreationCheckbox.Value)
 		addonConfig.setValue("captureActiveWindowTitle", self.captureActiveWindowTitleCheckbox.Value)
 		addonConfig.setValue("rememberTakerSizeAndPos", self.rememberTakerSizeAndPosCheckbox.Value)
 		addonConfig.setValue("autoAlignText", self.autoAlignTextCheckbox.Value)
+
+	def _migrateNotesData(self, oldPath, newPath):
+		"""Migrate notes data from old directory to new directory."""
+		import shutil
+		from logHandler import log
+
+		try:
+			if not os.path.isdir(oldPath):
+				return  # Nothing to migrate
+
+			# Create new directory if it doesn't exist
+			os.makedirs(newPath, exist_ok=True)
+
+			# Copy notes.json file
+			oldNotesFile = os.path.join(oldPath, "notes.json")
+			if os.path.isfile(oldNotesFile):
+				newNotesFile = os.path.join(newPath, "notes.json")
+				shutil.copy2(oldNotesFile, newNotesFile)
+				log.info(f"Migrated notes data from {oldPath} to {newPath}")
+		except Exception as e:
+			log.exception(f"Error migrating notes data: {e}")

@@ -124,14 +124,16 @@ def _openInWord(filePath, callback, *args):
 def _findAvailablePath(dirName, fileTitle, extension):
 	"""Finds available file path if the given one is already used.
 	We need this to avoid over riding existing files content"""
+	from .constants import DEFAULT_DOCUMENTS_PATH
+
 	dirWasChanged = False
 	if not os.path.isdir(dirName):
 		try:
-			os.mkdir(dirName)
-		except Exception:
+			os.makedirs(dirName, exist_ok=True)
+		except OSError:
 			log.debug("The user default directory name is invalid! Reverting to the user default one.")
 			if not os.path.isdir(DEFAULT_DOCUMENTS_PATH):
-				os.mkdir(DEFAULT_DOCUMENTS_PATH)
+				os.makedirs(DEFAULT_DOCUMENTS_PATH, exist_ok=True)
 			dirName = DEFAULT_DOCUMENTS_PATH
 			dirWasChanged = True
 	candidatePath = os.path.join(dirName, f"{fileTitle}.{extension}")
