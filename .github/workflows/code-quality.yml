@@ -16,16 +16,14 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Install Poetry
+        run: pipx install poetry
+
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.13"
           cache: poetry
-
-      - name: Install Poetry
-        run: |
-          pip install poetry
-          echo "$HOME/.local/bin" >> $GITHUB_PATH
 
       - name: Install dependencies
         run: python -m poetry install
@@ -41,16 +39,14 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Install Poetry
+        run: pipx install poetry
+
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.13"
           cache: poetry
-
-      - name: Install Poetry
-        run: |
-          pip install poetry
-          echo "$HOME/.local/bin" >> $GITHUB_PATH
 
       - name: Install dependencies
         run: python -m poetry install
