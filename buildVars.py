@@ -21,7 +21,9 @@ addon_info = AddonInfo(
 	addon_summary=_("Quick Notetaker"),
 	# Add-on description
 	# Translators: Long description to be shown for this add-on on add-on information from add-ons manager
-	addon_description=_("""A note taker for NVDA. Allows the user to create, edit, view, manage and export notes to different formats."""),
+	addon_description=_(
+		"""A note taker for NVDA. Allows the user to create, edit, view, manage and export notes to different formats."""
+	),
 	# version
 	addon_version="1.4",
 	# Brief changelog for this version
