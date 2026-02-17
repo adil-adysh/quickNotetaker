@@ -91,15 +91,31 @@ def onInstall():
 def onUninstall():
 	"""Clean up addon configuration when the addon is uninstalled.
 
-	NVDA calls this function when the addon is removed.
+	NVDA calls this function during startup after the user has chosen to remove the add-on.
 	This removes the addon's config section while preserving user data (notes.json).
+
+	Note: This function runs before other NVDA components are initialized,
+	so it cannot display dialogs or request user input.
 	"""
 	try:
-		if "quick_notes" in config.conf.spec:
-			del config.conf.spec["quick_notes"]
-		if "quick_notes" in config.conf:
-			del config.conf["quick_notes"]
-		config.conf.save()
+		# Safely remove config specification
+		if config.conf.spec is not None:
+			if "quick_notes" in config.conf.spec:
+				del config.conf.spec["quick_notes"]
+				logger.info("Removed quick_notes config specification")
+
+		# Safely remove config values
+		if config.conf is not None:
+			if "quick_notes" in config.conf:
+				del config.conf["quick_notes"]
+				logger.info("Removed quick_notes configuration values")
+
+		# Save configuration if possible
+		if hasattr(config.conf, "save"):
+			config.conf.save()
+			logger.info("Configuration saved successfully")
+
 		logger.info("Addon configuration cleanup completed successfully")
 	except Exception as e:
+		# Log but don't raise - errors here shouldn't block addon removal
 		logger.exception(f"Error during uninstall cleanup: {e}")

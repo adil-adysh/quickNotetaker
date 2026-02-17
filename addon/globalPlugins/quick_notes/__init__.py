@@ -10,7 +10,7 @@ from scriptHandler import script
 import gui
 from . import dialogs
 from .dialogs import NoteTakerDialog, NotesManagerDialog
-from .settingsPanel import QuickNotetakerPanel
+from .settingsPanel import QuickNotesPanel
 from . import notesManager
 import os
 from .constants import TEMP_FILES_PATH
@@ -42,11 +42,11 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 			os.mkdir(TEMP_FILES_PATH)
 		except FileExistsError:
 			pass
-		gui.settingsDialogs.NVDASettingsDialog.categoryClasses.append(QuickNotetakerPanel)
+		gui.settingsDialogs.NVDASettingsDialog.categoryClasses.append(QuickNotesPanel)
 
 	def terminate(self):
 		super(GlobalPlugin, self).terminate()
-		gui.settingsDialogs.NVDASettingsDialog.categoryClasses.remove(QuickNotetakerPanel)
+		gui.settingsDialogs.NVDASettingsDialog.categoryClasses.remove(QuickNotesPanel)
 		if not os.path.isdir(TEMP_FILES_PATH):
 			return
 		for file in os.listdir(TEMP_FILES_PATH):

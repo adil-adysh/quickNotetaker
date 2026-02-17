@@ -27,7 +27,7 @@ from .helpers import (
 	openInWord,
 )
 from . import addonConfig
-from .settingsPanel import QuickNotetakerPanel
+from .settingsPanel import QuickNotesPanel
 import addonHandler
 
 
@@ -503,7 +503,7 @@ class NotesManagerDialog(
 		gui.mainFrame.postPopup()
 
 	def onSettings(self, evt):
-		gui.mainFrame._popupSettingsDialog(NVDASettingsDialog, QuickNotetakerPanel)
+		gui.mainFrame._popupSettingsDialog(NVDASettingsDialog, QuickNotesPanel)
 
 	def onClose(self, evt):
 		self.DestroyChildren()

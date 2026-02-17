@@ -13,12 +13,12 @@ from . import addonConfig
 
 CONFIG_PATH = globalVars.appArgs.configPath
 
-QUICK_NOTETAKER_PATH = os.path.join(CONFIG_PATH, "addons", "quick_notes", "globalPlugins")
+QUICK_NOTES_PATH = os.path.join(CONFIG_PATH, "addons", "quick_notes", "globalPlugins")
 
-QUICK_NOTETAKER_PATH_DEV = os.path.join(CONFIG_PATH, "scratchpad", "globalPlugins", "quick_notes")
+QUICK_NOTES_PATH_DEV = os.path.join(CONFIG_PATH, "scratchpad", "globalPlugins", "quick_notes")
 
 # Remember to comment out in production
-# QUICK_NOTETAKER_PATH = QUICK_NOTETAKER_PATH_DEV
+# QUICK_NOTES_PATH = QUICK_NOTES_PATH_DEV
 
 
 # Use configurable data path with fallback to legacy location
@@ -88,7 +88,7 @@ def _get_pandoc_path_internal():
 		log.warning(f"Failed to load user pandoc path from config: {e}")
 		user_pandoc_path = ""
 
-	pandoc_path = get_pandoc_path(QUICK_NOTETAKER_PATH, user_pandoc_path)
+	pandoc_path = get_pandoc_path(QUICK_NOTES_PATH, user_pandoc_path)
 	if pandoc_path:
 		log.info(f"Pandoc found at: {pandoc_path}")
 	else:
@@ -102,6 +102,6 @@ PANDOC_PATH = _get_pandoc_path_internal()
 # PANDOC_PATH_DEV = _get_pandoc_path_internal()  # Would need separate function for dev path if needed
 # PANDOC_PATH = PANDOC_PATH_DEV
 
-TEMP_FILES_PATH = os.path.join(QUICK_NOTETAKER_PATH, "tempFiles")
+TEMP_FILES_PATH = os.path.join(QUICK_NOTES_PATH, "tempFiles")
 
 DEFAULT_DOCUMENTS_PATH = os.path.normpath(os.path.expanduser("~/documents/quick_notes"))

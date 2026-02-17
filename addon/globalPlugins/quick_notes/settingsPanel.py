@@ -13,7 +13,7 @@ from logHandler import log
 from . import addonConfig
 
 
-class QuickNotetakerPanel(SettingsPanel):
+class QuickNotesPanel(SettingsPanel):
 	# Translators: the title of the Quick Notetaker panel in NVDA's settings
 	title = _("Quick Notetaker")
 
