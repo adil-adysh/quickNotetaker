@@ -7,15 +7,15 @@
 
 import config
 import os
-import wx
 from logHandler import log
 
 
 def initialize():
-	"""Initialize configuration spec for quick_notes add-on.
+	"""Initialize configuration spec for quick_notes add-on at runtime.
 
-	This consolidates all config keys from both installTasks.py and runtime usage.
-	The spec is registered during install (installTasks.py) and verified/updated here at runtime.
+	This runs when the addon is loaded (in GlobalPlugin.__init__).
+	Registers the complete spec and ensures config section exists.
+	This is the only place where the config spec is registered.
 	"""
 	configSpec = {
 		# Data storage paths
@@ -31,18 +31,20 @@ def initialize():
 		"pandocUserPath": "string(default='')",
 		"showPandocPromptOnInstall": "boolean(default=True)",
 		# Window position and size
-		"notesXPos": f"integer(default={wx.DefaultPosition.x})",
-		"notesYPos": f"integer(default={wx.DefaultPosition.y})",
-		"notesWidth": "integer(default=500)",
-		"notesHeight": "integer(default=500)",
+		"notesXPos": "integer(default=-1)",
+		"notesYPos": "integer(default=-1)",
+		"notesWidth": "integer(default=500, min=200, max=2000)",
+		"notesHeight": "integer(default=500, min=200, max=2000)",
 	}
 
-	# Initialize the spec if it doesn't exist
-	if "quick_notes" not in config.conf.spec:
-		config.conf.spec["quick_notes"] = {}
-
-	# Update the spec to ensure all keys are present
+	# Register spec using setdefault + update pattern
+	# This ensures the spec exists and is properly merged
+	config.conf.spec.setdefault("quick_notes", {})
 	config.conf.spec["quick_notes"].update(configSpec)
+
+	# Ensure the quick_notes section exists in config data
+	if "quick_notes" not in config.conf:
+		config.conf["quick_notes"] = {}
 
 
 def getValue(key):

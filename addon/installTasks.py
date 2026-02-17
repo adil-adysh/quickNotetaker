@@ -15,35 +15,9 @@ _ = gettext.gettext
 
 addonHandler.initTranslation()
 
-# Config spec definition - must match addonConfig.py's initialize() function
-# This ensures consistency between install-time and runtime configuration
-confspec = {
-	# Data storage paths
-	"notesDataPath": f"string(default={os.path.normpath(os.path.join(os.path.expanduser('~'), 'appdata', 'roaming', 'nvda', 'quick_notes data')) if os.name == 'nt' else os.path.normpath(os.path.join(os.path.expanduser('~'), '.config', 'nvda', 'quick_notes data'))})",
-	"notesDocumentsPath": f"string(default={os.path.normpath(os.path.expanduser('~/documents/quick_notes'))})",
-	# User preferences
-	"askWhereToSaveDocx": "boolean(default=False)",
-	"openFileAfterCreation": "boolean(default=False)",
-	"captureActiveWindowTitle": "boolean(default=True)",
-	"rememberNotesWindowSizeAndPos": "boolean(default=False)",
-	"autoAlignText": "boolean(default=True)",
-	# Pandoc settings
-	"pandocUserPath": "string(default='')",
-	"showPandocPromptOnInstall": "boolean(default=True)",
-	# Window position and size
-	"notesXPos": "integer(default=-1)",
-	"notesYPos": "integer(default=-1)",
-	"notesWidth": "integer(default=500)",
-	"notesHeight": "integer(default=500)",
-}
-config.conf.spec.setdefault("quick_notes", {})
-config.conf.spec["quick_notes"].update(confspec)
-
 logger = logging.getLogger("quick_notes.installTasks")
 
 PANDOC_RELEASE_URL = "https://github.com/jgm/pandoc/releases/latest"
-
-user_pandoc_path = config.conf["quick_notes"].get("pandocUserPath", "")
 
 
 # Helper to locate pandoc
@@ -71,18 +45,31 @@ def locate_pandoc(user_path=None):
 
 
 def onInstall():
-	if not config.conf["quick_notes"].get("showPandocPromptOnInstall", True):
+	"""Check if Pandoc is available and prompt user if not."""
+	# Try to get user's pandoc path if config is available
+	try:
+		user_pandoc_path = config.conf["quick_notes"].get("pandocUserPath", "")
+		show_prompt = config.conf["quick_notes"].get("showPandocPromptOnInstall", True)
+	except (KeyError, AttributeError):
+		# Config not initialized yet (will be done at runtime)
+		user_pandoc_path = ""
+		show_prompt = True
+
+	if not show_prompt:
 		return
+
 	pandoc_path = locate_pandoc(user_pandoc_path)
 	if pandoc_path:
 		logger.info(f"Pandoc detected at {pandoc_path}.")
 		return
-	# Only import gui.message when needed, avoid shadowing
+
+	# Only import gui.message when needed
 	try:
 		from gui.message import MessageDialog, ReturnCode
 	except ImportError:
 		logger.error("Could not import gui.message. Pandoc prompt will not be shown.")
 		return
+
 	result = MessageDialog.ask(
 		_(
 			"Pandoc is required for Quick Notes to convert documents. Would you like to open the Pandoc releases page to download it?"
@@ -96,33 +83,22 @@ def onInstall():
 
 
 def onUninstall():
-	"""Clean up addon configuration when the addon is uninstalled.
+	"""Clean up addon configuration when uninstalled.
 
-	NVDA calls this function during startup after the user has chosen to remove the add-on.
-	This removes the addon's config section while preserving user data (notes.json).
-
-	Note: This function runs before other NVDA components are initialized,
-	so it cannot display dialogs or request user input.
+	Following NVDA's standard pattern:
+	- Remove spec definition only
+	- Let NVDA handle the rest
+	- User data (if any) is preserved by design
 	"""
 	try:
-		# Safely remove config specification
-		if config.conf.spec is not None:
-			if "quick_notes" in config.conf.spec:
-				del config.conf.spec["quick_notes"]
-				logger.info("Removed quick_notes config specification")
+		# Remove spec only (this disables the addon's config in NVDA)
+		if "quick_notes" in config.conf.spec:
+			del config.conf.spec["quick_notes"]
+			logger.info("Removed quick_notes config spec")
 
-		# Safely remove config values
-		if config.conf is not None:
-			if "quick_notes" in config.conf:
-				del config.conf["quick_notes"]
-				logger.info("Removed quick_notes configuration values")
+		# Save configuration
+		config.conf.save()
+		logger.info("Addon configuration cleanup completed")
 
-		# Save configuration if possible
-		if hasattr(config.conf, "save"):
-			config.conf.save()
-			logger.info("Configuration saved successfully")
-
-		logger.info("Addon configuration cleanup completed successfully")
-	except Exception as e:
-		# Log but don't raise - errors here shouldn't block addon removal
-		logger.exception(f"Error during uninstall cleanup: {e}")
+	except Exception:
+		logger.exception("Error during uninstall cleanup")
