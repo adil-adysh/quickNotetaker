@@ -6,12 +6,10 @@
 # See the file COPYING for more details.
 
 import os
-import gui
 from gui.settingsDialogs import SettingsPanel
 from gui import guiHelper
 import wx
 from . import addonConfig
-import addonHandler
 
 
 class QuickNotetakerPanel(SettingsPanel):

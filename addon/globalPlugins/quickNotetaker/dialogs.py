@@ -9,16 +9,23 @@ import wx
 import gui
 from gui import guiHelper
 from gui import nvdaControls
-from gui.dpiScalingHelper import DpiScalingHelperMixin, DpiScalingHelperMixinWithoutInit
+from gui.dpiScalingHelper import DpiScalingHelperMixinWithoutInit
 from gui.settingsDialogs import NVDASettingsDialog
 from logHandler import log
 import ui
 from .lib.markdown2 import markdown
 import weakref
 import api
-import re
 from . import notesManager
-from .helpers import *
+from .helpers import (
+	handleMdContent,
+	getTitle,
+	handleTextAlignment,
+	Align,
+	saveAsWord,
+	getPreviewText,
+	openInWord,
+)
 from . import addonConfig
 from .settingsPanel import QuickNotetakerPanel
 import addonHandler
@@ -248,14 +255,14 @@ class NoteTakerDialog(wx.Dialog):
 	def onCopy(self, evt):
 		content = self.noteEditArea.GetValue()
 		res = api.copyToClip(content, False)
-		if res == True:
+		if res:
 			# Translators: The message which tells the user that copying the note was successful
 			ui.message(_("Copied to clipboard!"))
 
 	def onCopyAsHtml(self, evt):
 		content = self.noteEditArea.GetValue()
 		res = api.copyToClip(markdown(content, extras=["markdown-in-html"]), False)
-		if res == True:
+		if res:
 			# Translators: The message which tells the user that copying the note was successful
 			ui.message(_("Copied to clipboard!"))
 
@@ -602,7 +609,7 @@ class NotesManagerDialog(
 		if not curNote:
 			return
 		res = api.copyToClip(curNote.content, False)
-		if res == True:
+		if res:
 			# Translators: the message telling the user that copying the note was successful
 			ui.message(_("Copied to clipboard!"))
 

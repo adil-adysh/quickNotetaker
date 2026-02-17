@@ -115,7 +115,7 @@ def _openInWord(filePath, callback, *args):
 	try:
 		os.startfile(filePath)
 		result = True
-	except:
+	except Exception:
 		pass
 	if callback:
 		callback(result, *args)
@@ -128,7 +128,7 @@ def _findAvailablePath(dirName, fileTitle, extension):
 	if not os.path.isdir(dirName):
 		try:
 			os.mkdir(dirName)
-		except:
+		except Exception:
 			log.debug("The user default directory name is invalid! Reverting to the user default one.")
 			if not os.path.isdir(DEFAULT_DOCUMENTS_PATH):
 				os.mkdir(DEFAULT_DOCUMENTS_PATH)
@@ -264,7 +264,7 @@ def handleTextAlignment(text, currentAlignment):
 	if unicodedata.bidirectional(lettersOnly[0]) in rtlClasses and currentAlignment != wx.Layout_RightToLeft:
 		return Align.ALIGN_TO_RIGHT
 	elif (
-		not unicodedata.bidirectional(lettersOnly[0]) in rtlClasses
+		unicodedata.bidirectional(lettersOnly[0]) not in rtlClasses
 		and currentAlignment != wx.Layout_LeftToRight
 	):
 		return Align.ALIGN_TO_LEFT

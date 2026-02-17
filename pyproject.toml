@@ -1,5 +1,17 @@
+[project]
+name = "quickNotetaker"
+version = "1.4"
+description = "A note taker for NVDA"
+requires-python = ">=3.10"
+
+[tool.poetry]
+name = "quickNotetaker"
+version = "1.4"
+description = "A note taker for NVDA"
+package-mode = false
+
 [tool.ruff]
-line-length = 110
+	line-length = 110
 
 builtins = [
 	# translation lookup
@@ -20,6 +32,7 @@ include = [
 exclude = [
 	".git",
 	"__pycache__",
+	"lib/markdown2.py",
 ]
 
 [tool.ruff.format]
@@ -38,6 +51,8 @@ ignore = [
 # sconstruct contains many inbuilt functions not recognised by the lint,
 # so ignore F821.
 "sconstruct" = ["F821"]
+# markdown2.py is a third-party library with import ordering issues
+"addon/globalPlugins/quickNotetaker/lib/markdown2.py" = ["E402", "E741"]
 
 [tool.pyright]
 pythonPlatform = "Windows"

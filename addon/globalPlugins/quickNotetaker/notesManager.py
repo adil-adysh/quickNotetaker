@@ -92,7 +92,7 @@ def _dumpAllNotes(allNotes):
 		with open(DATA_FILE_PATH, mode="w", encoding="utf8") as file:
 			json.dump([note.__dict__ for note in allNotes], file, indent=4, ensure_ascii=False)
 	except:
-		with open(dataFilePath, mode="w", encoding="utf8") as file:
+		with open(DATA_FILE_PATH, mode="w", encoding="utf8") as file:
 			file.write(allContent)
 		raise
 
