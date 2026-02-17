@@ -86,3 +86,20 @@ def onInstall():
 		import webbrowser
 
 		webbrowser.open(PANDOC_RELEASE_URL)
+
+
+def onUninstall():
+	"""Clean up addon configuration when the addon is uninstalled.
+
+	NVDA calls this function when the addon is removed.
+	This removes the addon's config section while preserving user data (notes.json).
+	"""
+	try:
+		if "quick_notes" in config.conf.spec:
+			del config.conf.spec["quick_notes"]
+		if "quick_notes" in config.conf:
+			del config.conf["quick_notes"]
+		config.conf.save()
+		logger.info("Addon configuration cleanup completed successfully")
+	except Exception as e:
+		logger.exception(f"Error during uninstall cleanup: {e}")
