@@ -15,15 +15,22 @@ _ = gettext.gettext
 
 addonHandler.initTranslation()
 
+# Config spec definition - must match addonConfig.py's initialize() function
+# This ensures consistency between install-time and runtime configuration
 confspec = {
-	"pandocUserPath": "string(default='')",
-	"showPandocPromptOnInstall": "boolean(default=True)",
+	# Data storage paths
+	"notesDataPath": f"string(default={os.path.normpath(os.path.join(os.path.expanduser('~'), 'appdata', 'roaming', 'nvda', 'quick_notes data')) if os.name == 'nt' else os.path.normpath(os.path.join(os.path.expanduser('~'), '.config', 'nvda', 'quick_notes data'))})",
 	"notesDocumentsPath": f"string(default={os.path.normpath(os.path.expanduser('~/documents/quick_notes'))})",
+	# User preferences
 	"askWhereToSaveDocx": "boolean(default=False)",
 	"openFileAfterCreation": "boolean(default=False)",
 	"captureActiveWindowTitle": "boolean(default=True)",
 	"rememberNotesWindowSizeAndPos": "boolean(default=False)",
 	"autoAlignText": "boolean(default=True)",
+	# Pandoc settings
+	"pandocUserPath": "string(default='')",
+	"showPandocPromptOnInstall": "boolean(default=True)",
+	# Window position and size
 	"notesXPos": "integer(default=-1)",
 	"notesYPos": "integer(default=-1)",
 	"notesWidth": "integer(default=500)",
