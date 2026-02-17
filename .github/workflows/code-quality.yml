@@ -21,14 +21,17 @@ jobs:
         with:
           python-version: 3.11
 
-      - name: Install ruff
-        run: pip install ruff
+      - name: Install Poetry
+        uses: snok/install-poetry@v1
+
+      - name: Install dependencies
+        run: poetry install
 
       - name: Check code formatting
-        run: ruff format --check .
+        run: poetry run ruff format --check .
 
       - name: Run ruff linter
-        run: ruff check .
+        run: poetry run ruff check .
 
   pre-commit:
     runs-on: ubuntu-latest
