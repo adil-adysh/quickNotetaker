@@ -9,6 +9,7 @@ import os
 from gui.settingsDialogs import SettingsPanel
 from gui import guiHelper
 import wx
+from logHandler import log
 from . import addonConfig
 
 
@@ -84,38 +85,107 @@ class QuickNotetakerPanel(SettingsPanel):
 		self.autoAlignTextCheckbox.Value = addonConfig.getValue("autoAlignText")
 
 	def onSave(self):
+		log.debug("Saving Quick Notetaker settings")
 		oldNotesDataPath = addonConfig.getValue("notesDataPath")
 		newNotesDataPath = os.path.normpath(self.notesDataDirectoryEdit.Value)
 
+		# Validate path is not empty
+		if not newNotesDataPath or not newNotesDataPath.strip():
+			log.error("Notes data path cannot be empty")
+			wx.MessageBox(
+				_("Please specify a directory for notes data storage."),
+				_("Invalid Path"),
+				wx.ICON_ERROR,
+			)
+			return
+
+		log.debug(f"Old notes data path: {oldNotesDataPath}")
+		log.debug(f"New notes data path: {newNotesDataPath}")
+
 		# Migrate notes data if the path changed
 		if oldNotesDataPath != newNotesDataPath:
-			self._migrateNotesData(oldNotesDataPath, newNotesDataPath)
+			log.info("Notes data path changed, attempting migration")
+			wasSuccessful = self._migrateNotesData(oldNotesDataPath, newNotesDataPath)
+			if not wasSuccessful:
+				# Migration failed, don't save the new path
+				log.error("Migration failed, settings not saved")
+				return
 
 		addonConfig.setValue("notesDataPath", newNotesDataPath)
+		log.info(f"Updated notes data path to: {newNotesDataPath}")
 		addonConfig.setValue("notesDocumentsPath", os.path.normpath(self.documentDirectoryEdit.Value))
 		addonConfig.setValue("askWhereToSaveDocx", self.askWhereToSaveDocxCheckbox.Value)
 		addonConfig.setValue("openFileAfterCreation", self.openAfterCreationCheckbox.Value)
 		addonConfig.setValue("captureActiveWindowTitle", self.captureActiveWindowTitleCheckbox.Value)
 		addonConfig.setValue("rememberTakerSizeAndPos", self.rememberTakerSizeAndPosCheckbox.Value)
 		addonConfig.setValue("autoAlignText", self.autoAlignTextCheckbox.Value)
+		log.debug("Quick Notetaker settings saved successfully")
 
 	def _migrateNotesData(self, oldPath, newPath):
-		"""Migrate notes data from old directory to new directory."""
-		import shutil
-		from logHandler import log
+		"""Migrate notes data from old directory to new directory.
 
+		Returns:
+			True if migration was successful or not needed
+			False if migration failed
+		"""
+		import shutil
+
+		log.info(f"Starting notes data migration from {oldPath} to {newPath}")
 		try:
 			if not os.path.isdir(oldPath):
-				return  # Nothing to migrate
+				log.debug(f"Old path does not exist: {oldPath}, skipping migration")
+				return True  # Nothing to migrate
+
+			# Check if old file exists
+			oldNotesFile = os.path.join(oldPath, "notes.json")
+			if not os.path.isfile(oldNotesFile):
+				log.debug(f"No notes.json found in {oldPath}, skipping migration")
+				return True  # No file to migrate
+
+			log.debug(f"Found notes file at {oldNotesFile}")
 
 			# Create new directory if it doesn't exist
-			os.makedirs(newPath, exist_ok=True)
+			if not os.path.isdir(newPath):
+				log.info(f"Creating new data directory: {newPath}")
+				os.makedirs(newPath, exist_ok=True)
+
+			# Check if file already exists at destination
+			newNotesFile = os.path.join(newPath, "notes.json")
+			if os.path.isfile(newNotesFile):
+				log.warning(f"Notes file already exists at destination: {newNotesFile}")
+				dlg = wx.MessageDialog(
+					None,
+					_("A notes file already exists at the destination. Do you want to overwrite it?"),
+					_("Notes Already Exist"),
+					wx.YES_NO | wx.ICON_QUESTION,
+				)
+				if dlg.ShowModal() != wx.ID_YES:
+					log.info("User declined to overwrite existing notes")
+					dlg.Destroy()
+					return False  # User cancelled migration
+				dlg.Destroy()
 
 			# Copy notes.json file
-			oldNotesFile = os.path.join(oldPath, "notes.json")
-			if os.path.isfile(oldNotesFile):
-				newNotesFile = os.path.join(newPath, "notes.json")
-				shutil.copy2(oldNotesFile, newNotesFile)
-				log.info(f"Migrated notes data from {oldPath} to {newPath}")
+			log.info(f"Copying notes file from {oldNotesFile} to {newNotesFile}")
+			shutil.copy2(oldNotesFile, newNotesFile)
+			log.info(f"Successfully migrated notes data from {oldPath} to {newPath}")
+			wx.MessageBox(
+				_(f"Notes successfully migrated to {newPath}"),
+				_("Migration Complete"),
+				wx.ICON_INFORMATION,
+			)
+			return True
+		except (IOError, OSError) as e:
+			log.exception(f"I/O error during migration: {e}")
+			msg = _(f"Failed to migrate notes data: {e}")
+			log.error(msg)
+			wx.MessageBox(msg, _("Migration Error"), wx.ICON_ERROR)
+			return False
 		except Exception as e:
-			log.exception(f"Error migrating notes data: {e}")
+			log.exception(f"Unexpected error during migration: {e}")
+			wx.MessageBox(
+				_("An unexpected error occurred during migration. Check the NVDA log for details."),
+				_("Migration Error"),
+				wx.ICON_ERROR,
+			)
+			return False

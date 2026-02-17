@@ -61,7 +61,9 @@ def initialize():
 	try:
 		with open(data_file_path, mode="x", encoding="utf8") as file:
 			file.write("[]")
-	except:
+	except FileExistsError:
+		pass  # File was created by another process
+	except Exception:
 		log.error("Can't create data file")
 		raise
 
@@ -95,7 +97,8 @@ def _dumpAllNotes(allNotes):
 	try:
 		with open(data_file_path, mode="w", encoding="utf8") as file:
 			json.dump([note.__dict__ for note in allNotes], file, indent=4, ensure_ascii=False)
-	except:
+	except (IOError, OSError) as e:
+		log.error(f"Failed to save notes: {e}")
 		with open(data_file_path, mode="w", encoding="utf8") as file:
 			file.write(allContent)
 		raise

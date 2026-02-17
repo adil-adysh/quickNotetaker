@@ -27,13 +27,15 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 		super(GlobalPlugin, self).__init__(*args, **kwargs)
 		addonConfig.initialize()
 		notesManager.initialize()
+		documentsPath = addonConfig.getValue("notesDocumentsPath")
 		try:
-			os.mkdir(addonConfig.getValue("notesDocumentsPath"))
+			os.mkdir(documentsPath)
 		except FileNotFoundError:
 			# The user has no documents directory
 			# Create the add-on documents folder in the user root folder instead
-			addonConfig.setValue("notesDocumentsPath", os.path.expanduser("~\\QuickNotetaker"))
-			os.mkdir(addonConfig.getValue("notesDocumentsPath"))
+			documentsPath = os.path.normpath(os.path.join(os.path.expanduser("~"), "QuickNotetaker"))
+			addonConfig.setValue("notesDocumentsPath", documentsPath)
+			os.mkdir(documentsPath)
 		except FileExistsError:
 			pass
 		try:

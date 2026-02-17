@@ -8,6 +8,7 @@
 import globalVars
 import os
 import shutil
+from logHandler import log
 from . import addonConfig
 
 CONFIG_PATH = globalVars.appArgs.configPath
@@ -24,10 +25,14 @@ QUICK_NOTETAKER_PATH_DEV = os.path.join(CONFIG_PATH, "scratchpad", "globalPlugin
 def _get_data_dir_path_internal():
 	try:
 		addonConfig.initialize()  # Ensure config is initialized
-		return addonConfig.getValue("notesDataPath")
-	except Exception:
+		path = addonConfig.getValue("notesDataPath")
+		log.debug(f"Loaded notes data path from config: {path}")
+		return path
+	except Exception as e:
 		# Fallback to legacy location if config fails
-		return os.path.join(CONFIG_PATH, "Quick Notetaker data")
+		fallback_path = os.path.join(CONFIG_PATH, "Quick Notetaker data")
+		log.warning(f"Failed to load notes data path from config: {e}. Using fallback path: {fallback_path}")
+		return fallback_path
 
 
 def get_data_dir_path():
@@ -76,9 +81,19 @@ def _get_pandoc_path_internal():
 	try:
 		addonConfig.initialize()
 		user_pandoc_path = addonConfig.getValue("pandocUserPath")
-	except Exception:
+		log.debug(
+			f"Loaded user pandoc path from config: {user_pandoc_path if user_pandoc_path else 'not set'}"
+		)
+	except Exception as e:
+		log.warning(f"Failed to load user pandoc path from config: {e}")
 		user_pandoc_path = ""
-	return get_pandoc_path(QUICK_NOTETAKER_PATH, user_pandoc_path)
+
+	pandoc_path = get_pandoc_path(QUICK_NOTETAKER_PATH, user_pandoc_path)
+	if pandoc_path:
+		log.info(f"Pandoc found at: {pandoc_path}")
+	else:
+		log.warning("Pandoc not found. Word document export may not work.")
+	return pandoc_path
 
 
 PANDOC_PATH = _get_pandoc_path_internal()
