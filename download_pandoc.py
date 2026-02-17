@@ -9,7 +9,7 @@ import stat
 import json
 
 # Define destination directory and binary path
-PANDOC_DEST_DIR = os.path.join("addon", "globalPlugins", "quickNotetaker", "lib", "pandoc")
+PANDOC_DEST_DIR = os.path.join("addon", "globalPlugins", "quick_notes", "lib", "pandoc")
 PANDOC_EXE_PATH = os.path.join(PANDOC_DEST_DIR, "pandoc.exe")
 
 

@@ -13,9 +13,9 @@ from . import addonConfig
 
 CONFIG_PATH = globalVars.appArgs.configPath
 
-QUICK_NOTETAKER_PATH = os.path.join(CONFIG_PATH, "addons", "quickNotetaker", "globalPlugins")
+QUICK_NOTETAKER_PATH = os.path.join(CONFIG_PATH, "addons", "quick_notes", "globalPlugins")
 
-QUICK_NOTETAKER_PATH_DEV = os.path.join(CONFIG_PATH, "scratchpad", "globalPlugins", "quickNotetaker")
+QUICK_NOTETAKER_PATH_DEV = os.path.join(CONFIG_PATH, "scratchpad", "globalPlugins", "quick_notes")
 
 # Remember to comment out in production
 # QUICK_NOTETAKER_PATH = QUICK_NOTETAKER_PATH_DEV

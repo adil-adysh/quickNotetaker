@@ -29,14 +29,14 @@ confspec = {
 	"takerWidth": "integer(default=500)",
 	"takerHeight": "integer(default=500)",
 }
-config.conf.spec.setdefault("quickNotetaker", {})
-config.conf.spec["quickNotetaker"].update(confspec)
+config.conf.spec.setdefault("quick_notes", {})
+config.conf.spec["quick_notes"].update(confspec)
 
-logger = logging.getLogger("quickNotetaker.installTasks")
+logger = logging.getLogger("quick_notes.installTasks")
 
 PANDOC_RELEASE_URL = "https://github.com/jgm/pandoc/releases/latest"
 
-user_pandoc_path = config.conf["quickNotetaker"].get("pandocUserPath", "")
+user_pandoc_path = config.conf["quick_notes"].get("pandocUserPath", "")
 
 
 # Helper to locate pandoc
@@ -64,7 +64,7 @@ def locate_pandoc(user_path=None):
 
 
 def onInstall():
-	if not config.conf["quickNotetaker"].get("showPandocPromptOnInstall", True):
+	if not config.conf["quick_notes"].get("showPandocPromptOnInstall", True):
 		return
 	pandoc_path = locate_pandoc(user_pandoc_path)
 	if pandoc_path:

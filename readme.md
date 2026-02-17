@@ -1,6 +1,6 @@
-# Quick Notetaker add-on for NVDA
+# quick_notes add-on for NVDA
 
-The Quick Notetaker add-on is a wonderful tool which allows writing
+The quick_notes add-on is a wonderful tool which allows writing
 notes quickly and easily anytime and from any app the user is using.
 Whether the user is watching a video for example, or participating in a
 meeting on Zoom, teams or Google meet, they can easily and smoothly open
@@ -89,12 +89,12 @@ The notes are organized in a tabular list which includes:
 The add-on settings are a part of NVDA’s settings interface. To reach
 those settings, the user needs to open the NVDA menu using NVDA key + n,
 choose preferences &gt; settings, and then arrow down until reaching
-Quick Notetaker category.
+quick_notes category.
 
 Using the settings interface the user can:
 
 -   Default documents directory: to choose the default directory where
-    Quick Notetaker documents will be saved. The user can press the
+    quick_notes documents will be saved. The user can press the
     “Browse” button to change the path of this directory.
 
 -   Ask me each time where to save the note's corresponding Microsoft

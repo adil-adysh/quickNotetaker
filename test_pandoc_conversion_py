@@ -3,7 +3,7 @@ import subprocess
 import tempfile
 
 PANDOC_EXE = os.path.join(
-    "addon", "globalPlugins", "quickNotetaker", "lib", "pandoc", "pandoc.exe"
+    "addon", "globalPlugins", "quick_notes", "lib", "pandoc", "pandoc.exe"
 )
 
 def run_pandoc_test(md_content, test_name):

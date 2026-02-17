@@ -25,18 +25,18 @@ def initialize():
 		"takerWidth": "integer(default=500)",
 		"takerHeight": "integer(default=500)",
 	}
-	config.conf.spec["quickNotetaker"] = configSpec
+	config.conf.spec["quick_notes"] = configSpec
 
 
 def getValue(key):
 	try:
-		return config.conf["quickNotetaker"][key]
+		return config.conf["quick_notes"][key]
 	except KeyError:
 		# Config key doesn't exist, likely upgrading from older version
 		# Re-initialize config to ensure all defaults are set
 		initialize()
-		return config.conf["quickNotetaker"][key]
+		return config.conf["quick_notes"][key]
 
 
 def setValue(key, value):
-	config.conf["quickNotetaker"][key] = value
+	config.conf["quick_notes"][key] = value

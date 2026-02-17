@@ -13,12 +13,14 @@ from site_scons.site_tools.NVDATool.utils import _
 
 # Add-on information variables
 addon_info = AddonInfo(
+	# add-on ID
+	addon_id="quick_notes",
 	# add-on Name/identifier, internal for NVDA
-	addon_name="quickNotetaker",
+	addon_name="quick_notes",
 	# Add-on summary/title, usually the user visible name of the add-on
 	# Translators: Summary for this add-on
 	# to be shown on installation and add-on information found in Add-ons Manager.
-	addon_summary=_("Quick Notetaker"),
+	addon_summary=_("quick_notes"),
 	# Add-on description
 	# Translators: Long description to be shown for this add-on on add-on information from add-ons manager
 	addon_description=_(
@@ -59,7 +61,7 @@ addon_info = AddonInfo(
 # pythonSources = ["addon/globalPlugins/*.py"]
 # For more information on SCons Glob expressions please take a look at:
 # https://scons.org/doc/production/HTML/scons-user/apd.html
-pythonSources: list[str] = ["addon/globalPlugins/quickNotetaker/*.py"]
+pythonSources: list[str] = ["addon/globalPlugins/quick_notes/*.py"]
 
 # Files that contain strings for translation. Usually your python sources
 i18nSources: list[str] = pythonSources + ["buildVars.py"]

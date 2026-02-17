@@ -55,7 +55,7 @@ ignore = [
 # so ignore F821.
 "sconstruct" = ["F821"]
 # markdown2.py is a third-party library with import ordering issues
-"addon/globalPlugins/quickNotetaker/lib/markdown2.py" = ["E402", "E741"]
+"addon/globalPlugins/quick_notes/lib/markdown2.py" = ["E402", "E741"]
 
 [tool.pyright]
 pythonPlatform = "Windows"
