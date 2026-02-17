@@ -33,7 +33,7 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 		except FileNotFoundError:
 			# The user has no documents directory
 			# Create the add-on documents folder in the user root folder instead
-			documentsPath = os.path.normpath(os.path.join(os.path.expanduser("~"), "QuickNotetaker"))
+			documentsPath = os.path.normpath(os.path.join(os.path.expanduser("~"), "quick_notes"))
 			addonConfig.setValue("notesDocumentsPath", documentsPath)
 			os.mkdir(documentsPath)
 		except FileExistsError:

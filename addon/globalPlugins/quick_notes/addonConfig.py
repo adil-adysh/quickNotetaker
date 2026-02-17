@@ -12,8 +12,8 @@ import wx
 
 def initialize():
 	configSpec = {
-		"notesDataPath": f"string(default={os.path.normpath(os.path.join(os.path.expanduser('~'), 'appdata', 'roaming', 'nvda', 'Quick Notetaker data')) if os.name == 'nt' else os.path.normpath(os.path.join(os.path.expanduser('~'), '.config', 'nvda', 'Quick Notetaker data'))})",
-		"notesDocumentsPath": f"string(default={os.path.normpath(os.path.expanduser('~/documents/quickNotetaker'))})",
+		"notesDataPath": f"string(default={os.path.normpath(os.path.join(os.path.expanduser('~'), 'appdata', 'roaming', 'nvda', 'quick_notes data')) if os.name == 'nt' else os.path.normpath(os.path.join(os.path.expanduser('~'), '.config', 'nvda', 'quick_notes data'))})",
+		"notesDocumentsPath": f"string(default={os.path.normpath(os.path.expanduser('~/documents/quick_notes'))})",
 		"askWhereToSaveDocx": "boolean(default=False)",
 		"openFileAfterCreation": "boolean(default=False)",
 		"captureActiveWindowTitle": "boolean(default=True)",

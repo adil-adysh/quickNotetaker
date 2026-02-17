@@ -30,7 +30,7 @@ def _get_data_dir_path_internal():
 		return path
 	except Exception as e:
 		# Fallback to legacy location if config fails
-		fallback_path = os.path.join(CONFIG_PATH, "Quick Notetaker data")
+		fallback_path = os.path.join(CONFIG_PATH, "quick_notes data")
 		log.warning(f"Failed to load notes data path from config: {e}. Using fallback path: {fallback_path}")
 		return fallback_path
 
@@ -64,7 +64,7 @@ def get_pandoc_path(base_path, user_path=None):
 	if user_path and os.path.isfile(user_path):
 		return user_path
 	# 2. Add-on lib path
-	lib_dir = os.path.join(base_path, "quickNotetaker", "lib")
+	lib_dir = os.path.join(base_path, "quick_notes", "lib")
 	pandoc_dir = os.path.join(lib_dir, "pandoc")
 	pandoc_bin = os.path.join(pandoc_dir, pandoc_bin_name)
 	if os.path.isfile(pandoc_bin):
@@ -104,4 +104,4 @@ PANDOC_PATH = _get_pandoc_path_internal()
 
 TEMP_FILES_PATH = os.path.join(QUICK_NOTETAKER_PATH, "tempFiles")
 
-DEFAULT_DOCUMENTS_PATH = os.path.normpath(os.path.expanduser("~/documents/quickNotetaker"))
+DEFAULT_DOCUMENTS_PATH = os.path.normpath(os.path.expanduser("~/documents/quick_notes"))

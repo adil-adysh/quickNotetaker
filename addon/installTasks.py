@@ -18,7 +18,7 @@ addonHandler.initTranslation()
 confspec = {
 	"pandocUserPath": "string(default='')",
 	"showPandocPromptOnInstall": "boolean(default=True)",
-	"notesDocumentsPath": f"string(default={os.path.normpath(os.path.expanduser('~/documents/quickNotetaker'))})",
+	"notesDocumentsPath": f"string(default={os.path.normpath(os.path.expanduser('~/documents/quick_notes'))})",
 	"askWhereToSaveDocx": "boolean(default=False)",
 	"openFileAfterCreation": "boolean(default=False)",
 	"captureActiveWindowTitle": "boolean(default=True)",
@@ -48,7 +48,7 @@ def locate_pandoc(user_path=None):
 		return user_path
 	# 2. Add-on lib path
 	base_path = os.path.dirname(__file__)
-	lib_dir = os.path.join(base_path, "lib")
+	lib_dir = os.path.join(base_path, "globalPlugins", "quick_notes", "lib")
 	pandoc_dir = os.path.join(lib_dir, "pandoc")
 	pandoc_bin = os.path.join(pandoc_dir, pandoc_bin_name)
 	if os.path.isfile(pandoc_bin):

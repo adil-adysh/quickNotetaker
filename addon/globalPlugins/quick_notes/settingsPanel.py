@@ -155,15 +155,25 @@ class QuickNotetakerPanel(SettingsPanel):
 				log.warning(f"Notes file already exists at destination: {newNotesFile}")
 				dlg = wx.MessageDialog(
 					None,
-					_("A notes file already exists at the destination. Do you want to overwrite it?"),
+					_(
+						"Notes already exist at the destination. Do you want to keep the existing notes at the new location?"
+					),
 					_("Notes Already Exist"),
 					wx.YES_NO | wx.ICON_QUESTION,
 				)
-				if dlg.ShowModal() != wx.ID_YES:
-					log.info("User declined to overwrite existing notes")
-					dlg.Destroy()
-					return False  # User cancelled migration
+				result = dlg.ShowModal()
 				dlg.Destroy()
+				if result == wx.ID_YES:
+					log.info("User chose to keep existing notes at destination, skipping migration")
+					wx.MessageBox(
+						_("Existing notes at destination will be kept."),
+						_("Migration Skipped"),
+						wx.ICON_INFORMATION,
+					)
+					return True  # Accept existing file, don't migrate
+				else:
+					log.info("User declined to keep existing notes")
+					return False  # User cancelled migration
 
 			# Copy notes.json file
 			log.info(f"Copying notes file from {oldNotesFile} to {newNotesFile}")
