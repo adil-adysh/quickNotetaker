@@ -2,7 +2,7 @@
 name = "quickNotetaker"
 version = "1.4"
 description = "A note taker for NVDA"
-requires-python = ">=3.10"
+requires-python = ">=3.13"
 
 [tool.poetry]
 name = "quickNotetaker"
