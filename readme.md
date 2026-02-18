@@ -1,6 +1,8 @@
-# quick_notes add-on for NVDA
+# Quick Notes add-on for NVDA
 
-The quick_notes add-on is a wonderful tool which allows writing
+> **Note:** Quick Notes is a revival of the original Quick Notetaker add-on, bringing enhanced features, improved configuration management, and continued compatibility with modern NVDA versions.
+
+The Quick Notes add-on is a wonderful tool which allows writing
 notes quickly and easily anytime and from any app the user is using.
 Whether the user is watching a video for example, or participating in a
 meeting on Zoom, teams or Google meet, they can easily and smoothly open
@@ -14,6 +16,13 @@ note was created by having the note title as the active window title the
 user was using. This behavior can be changed from the add-on settings,
 where the user can decide whether the active window title is captured
 when creating a new note.
+
+## What's New in Version 1.4
+
+-   **Configurable Notes Data Path**: Users can now choose where Quick Notes stores its notes data, with automatic migration support when changing locations.
+-   **Enhanced Configuration Management**: Improved error handling, validation, and better user prompts throughout the add-on.
+-   **Updated Compatibility**: Minimum NVDA version is now 2024.1, with full support for NVDA 2026.1.
+-   **Code Quality Improvements**: Updated to the latest NVDA add-on template and coding standards for better reliability.
 
 ## The Notetaker dialog
 
@@ -89,12 +98,17 @@ The notes are organized in a tabular list which includes:
 The add-on settings are a part of NVDA’s settings interface. To reach
 those settings, the user needs to open the NVDA menu using NVDA key + n,
 choose preferences &gt; settings, and then arrow down until reaching
-quick_notes category.
+Quick Notes category.
 
 Using the settings interface the user can:
 
+-   Notes data path: to choose where Quick Notes stores its notes data.
+    The user can press the "Browse" button to change this path. When 
+    changing the path, Quick Notes will offer to migrate existing notes
+    to the new location automatically.
+
 -   Default documents directory: to choose the default directory where
-    quick_notes documents will be saved. The user can press the
+    Quick Notes documents will be saved. The user can press the
     “Browse” button to change the path of this directory.
 
 -   Ask me each time where to save the note's corresponding Microsoft
@@ -301,3 +315,15 @@ Using the settings interface the user can:
     Several parts of the add-on were inspired by your magnificent work
     and effort, so please keep up this brilliant ecosystem and the
     cooperation.
+## Version History
+
+### Version 1.4 (February 2026)
+-   Configurable notes data path with automatic migration support
+-   Enhanced configuration management with improved error handling
+-   Updated to NVDA 2024.1+ with support for NVDA 2026.1
+-   Improved user prompts during notes migration process
+-   Code quality improvements and adherence to NVDA coding standards
+-   Note: Minimum NVDA version updated from 2019.3 to 2024.1
+
+### Previous Versions
+For the complete version history of the original Quick Notetaker add-on, please refer to the repository's changelog.
