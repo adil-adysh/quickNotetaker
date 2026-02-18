@@ -157,10 +157,12 @@ class QuickNotesPanel(SettingsPanel):
 			newNotesFile = os.path.join(newPath, "notes.json")
 			if os.path.isfile(newNotesFile):
 				log.warning(f"Notes file already exists at destination: {newNotesFile}")
+				oldFolderName = os.path.basename(oldPath)
+				newFolderName = os.path.basename(newPath)
 				dlg = wx.MessageDialog(
 					None,
 					_(
-						"Notes already exist at the destination. Do you want to keep the existing notes at the new location?"
+						f"You already have notes saved in {newFolderName}. Would you like to keep those notes, or replace them with the notes from {oldFolderName}?"
 					),
 					_("Notes Already Exist"),
 					wx.YES_NO | wx.ICON_QUESTION,
@@ -170,8 +172,8 @@ class QuickNotesPanel(SettingsPanel):
 				if result == wx.ID_YES:
 					log.info("User chose to keep existing notes at destination, skipping migration")
 					wx.MessageBox(
-						_("Existing notes at destination will be kept."),
-						_("Migration Skipped"),
+						_("Your existing notes at the new location have been kept."),
+						_("Migration Cancelled"),
 						wx.ICON_INFORMATION,
 					)
 					return True  # Accept existing file, don't migrate
@@ -183,23 +185,30 @@ class QuickNotesPanel(SettingsPanel):
 			log.info(f"Copying notes file from {oldNotesFile} to {newNotesFile}")
 			shutil.copy2(oldNotesFile, newNotesFile)
 			log.info(f"Successfully migrated notes data from {oldPath} to {newPath}")
+			newFolderName = os.path.basename(newPath)
 			wx.MessageBox(
-				_(f"Notes successfully migrated to {newPath}"),
+				_(f"Your notes have been successfully moved to {newFolderName}."),
 				_("Migration Complete"),
 				wx.ICON_INFORMATION,
 			)
 			return True
 		except (IOError, OSError) as e:
 			log.exception(f"I/O error during migration: {e}")
-			msg = _(f"Failed to migrate notes data: {e}")
-			log.error(msg)
-			wx.MessageBox(msg, _("Migration Error"), wx.ICON_ERROR)
+			wx.MessageBox(
+				_(
+					"Failed to move your notes to the new location. Please check that you have permission to access both folders and try again."
+				),
+				_("Migration Failed"),
+				wx.ICON_ERROR,
+			)
 			return False
 		except Exception as e:
 			log.exception(f"Unexpected error during migration: {e}")
 			wx.MessageBox(
-				_("An unexpected error occurred during migration. Check the NVDA log for details."),
-				_("Migration Error"),
+				_(
+					"An unexpected error occurred while moving your notes. Please check the NVDA log for more details."
+				),
+				_("Migration Failed"),
 				wx.ICON_ERROR,
 			)
 			return False
