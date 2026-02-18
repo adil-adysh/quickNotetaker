@@ -66,7 +66,7 @@ class NoteTakerDialog(wx.Dialog):
 			dialogPos = wx.Point(x=addonConfig.getValue("notesXPos"), y=addonConfig.getValue("notesYPos"))
 		return dialogSize, dialogPos
 
-	def __init__(self, currentNote=None, noteTitle=None):
+	def __init__(self, currentNote=None, noteTitle=None, noteContent=None):
 		if NoteTakerDialog._instance() is not None:
 			return
 		NoteTakerDialog._instance = weakref.ref(self)
@@ -121,7 +121,17 @@ class NoteTakerDialog(wx.Dialog):
 		self.noteEditArea.Bind(wx.EVT_KEY_UP, self.onKeyUp)
 		sizer.Add(self.noteEditArea, proportion=1, flag=wx.EXPAND)
 		sHelper.addItem(sizer, proportion=1, flag=wx.EXPAND)
-		if noteTitle:
+		if noteContent:
+			# If noteContent is provided (e.g., from selected text), use it
+			if noteTitle:
+				# If we have both title and content, combine them
+				self.noteEditArea.SetValue(noteTitle + "\n\n" + noteContent)
+			else:
+				# Just content without title
+				self.noteEditArea.SetValue(noteContent)
+			self.noteEditArea.SetInsertionPointEnd()
+		elif noteTitle:
+			# Only title, no content
 			self.noteEditArea.SetValue(noteTitle + "\n\n")
 			self.noteEditArea.SetInsertionPointEnd()
 		self.currentNote = currentNote

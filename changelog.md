@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.5] - 2026-02-18
+
+### Added
+- **Create Note from Selection**: New NVDA+Alt+Shift+S shortcut to create a note directly from selected text in browse mode
+- Selected text is automatically inserted as note content with optional window title prefilling
+- Supports both virtual buffer selections (browse mode) and editable field selections
+
 ## [1.4] - 2026-02-18
 
 ### Major Features

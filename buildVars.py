@@ -27,15 +27,14 @@ addon_info = AddonInfo(
 		"""Quick Notes is a revival of the original Quick Notetaker add-on. A powerful note taker for NVDA that allows you to create, edit, view, manage and export notes to different formats including DOCX. Features configurable notes storage paths with automatic migration support."""
 	),
 	# version
-	addon_version="1.4",
+	addon_version="1.5",
 	# Brief changelog for this version
 	# Translators: what's new content for the add-on version to be shown in the add-on store
-	addon_changelog=_("""* Configurable notes data path with automatic migration support for existing notes
-* Enhanced configuration management with improved error handling and validation
-* Updated to NVDA 2024.1+ with support for NVDA 2026.1
-* Improved user prompts during notes migration process
-* Code quality improvements and adherence to NVDA coding standards
-* Note: Minimum NVDA version updated from 2019.3 to 2024.1"""),
+	addon_changelog=_("""* Create note from selection: New NVDA+Alt+Shift+S shortcut to create notes from selected text in browse mode
+* Selected text is automatically inserted as note content with optional window title prefilling
+* Supports both virtual buffer selections (browse mode) and editable field selections
+* Fixed text selection handling to properly retrieve selected text from virtual buffer
+* Previous release (1.4): Configurable notes data path, enhanced configuration management, NVDA 2024.1+ support"""),
 	# Author(s)
 	addon_author="Adil Shaikh <ah.shaikh97@gmail.com>",
 	# URL for the add-on documentation support

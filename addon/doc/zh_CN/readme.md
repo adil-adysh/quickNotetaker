@@ -93,6 +93,8 @@
 
 - NVDA + Alt + n：打开 Notetaker 界面。
 
+- NVDA + Alt + Shift + s：使用浏览模式下选定的文本创建新笔记。
+
 - NVDA + Alt + v：打开笔记管理器界面。
 
 ### 不同界面中的键盘快捷键（英文）

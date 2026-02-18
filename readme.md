@@ -148,6 +148,8 @@ Using the settings interface the user can:
 
 -   NVDA + Alt + n: to open the Notetaker interface.
 
+-   NVDA + Alt + Shift + s: to create a new note with the currently selected text in browse mode.
+
 -   NVDA + Alt + v: to open the Notes Manager interface.
 
 ### Keyboard shortcuts in the different interfaces

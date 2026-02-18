@@ -17,6 +17,8 @@ from .constants import TEMP_FILES_PATH
 from . import addonConfig
 import api
 import addonHandler
+import textInfos
+import ui
 
 
 addonHandler.initTranslation()
@@ -68,6 +70,63 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 		dialogs.noteTakerInstance = NoteTakerDialog(noteTitle=noteTitle)
 		dialogs.noteTakerInstance.Show()
 		gui.mainFrame.postPopup()
+
+	@script(
+		description=_(
+			# Translators: the description for the command to create a note from selected text
+			"Creates a new note with the currently selected text in browse mode"
+		),
+		gesture="kb:NVDA+shift+alt+s",
+	)
+	def script_createNoteFromSelection(self, gesture):
+		selectedText = self._getSelectedText()
+		if not selectedText:
+			ui.message(
+				# Translators: Message when no text is selected
+				_("No text is selected. Please select some text and try again.")
+			)
+			return
+		noteTitle = None
+		if addonConfig.getValue("captureActiveWindowTitle"):
+			noteTitle = api.getForegroundObject().name
+		gui.mainFrame.prePopup()
+		dialogs.noteTakerInstance = NoteTakerDialog(noteTitle=noteTitle, noteContent=selectedText)
+		dialogs.noteTakerInstance.Show()
+		gui.mainFrame.postPopup()
+
+	def _getSelectedText(self):
+		"""Get selected text from virtual buffer (browse mode) or active control.
+
+		Returns:
+			str: The selected text, or None if no selection exists.
+		"""
+		try:
+			obj = api.getFocusObject()
+			# For virtual buffer (browse mode), try the tree interceptor first
+			ti = getattr(obj, "treeInterceptor", None)
+			if ti:
+				try:
+					info = ti.makeTextInfo(textInfos.POSITION_SELECTION)
+					if not info.isCollapsed:
+						return info.text
+				except (RuntimeError, NotImplementedError, AttributeError, TypeError):
+					pass
+
+			# Fall back to the focused object itself
+			try:
+				info = obj.makeTextInfo(textInfos.POSITION_SELECTION)
+				if not info.isCollapsed:
+					return info.text
+			except (RuntimeError, NotImplementedError, AttributeError, TypeError):
+				pass
+
+			return None
+		except Exception as e:
+			# Log any unexpected errors
+			import logging
+
+			logging.debug(f"Error getting selected text: {e}")
+			return None
 
 	@script(
 		description=_(
