@@ -24,19 +24,24 @@ addon_info = AddonInfo(
 	# Add-on description
 	# Translators: Long description to be shown for this add-on on add-on information from add-ons manager
 	addon_description=_(
-		"""A note taker for NVDA. Allows the user to create, edit, view, manage and export notes to different formats."""
+		"""Quick Notes is a revival of the original Quick Notetaker add-on. A powerful note taker for NVDA that allows you to create, edit, view, manage and export notes to different formats including DOCX. Features configurable notes storage paths with automatic migration support."""
 	),
 	# version
 	addon_version="1.4",
 	# Brief changelog for this version
 	# Translators: what's new content for the add-on version to be shown in the add-on store
-	addon_changelog=_("""* Initial changelog."""),
+	addon_changelog=_("""* Configurable notes data path with automatic migration support for existing notes
+* Enhanced configuration management with improved error handling and validation
+* Updated to NVDA 2024.1+ with support for NVDA 2026.1
+* Improved user prompts during notes migration process
+* Code quality improvements and adherence to NVDA coding standards
+* Note: Minimum NVDA version updated from 2019.3 to 2024.1"""),
 	# Author(s)
 	addon_author="Adil Shaikh <ah.shaikh97@gmail.com>",
 	# URL for the add-on documentation support
 	addon_url=None,
 	# URL for the add-on repository where the source code can be found
-	addon_sourceURL="https://github.com/mohammad-suliman/zoom-enhancements",
+	addon_sourceURL="https://github.com/adil-adysh/quickNotes",
 	# Documentation file name
 	addon_docFileName="readme.html",
 	# Minimum NVDA version supported (e.g. "2018.3.0", minor version is optional)

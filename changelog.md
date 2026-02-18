@@ -1,21 +1,46 @@
 # Changelog
 
-## [1.4] - 2026-02-06
+## [1.4] - 2026-02-18
+
+### Major Features
+- **Configurable Notes Data Path**: Implemented user-configurable notes data path with automatic migration support for existing notes
+- **Enhanced Configuration Management**: Improved configuration handling with better initialization, validation, and error handling
+
+### Breaking Changes
+- **Renamed from Quick Notetaker to Quick Notes**: Updated all references, panel names, and configurations for consistency
+- **Updated to 2025 Add-on Template**: Migrated to late 2025 NVDA add-on template edition with updated build system
+- **Minimum NVDA Version**: Updated minimum NVDA version requirement from 2019.3 to 2024.1
+
 ### Added
-- Added support for NVDA 2026.1 with updated minimum version requirement.
-- Enhanced CI/CD workflow with Pandoc automatic download and testing.
-- Implemented workflow caching for pre-commit hooks and scons builds.
-- Added gettext tools installation to Windows CI runner.
+- Migration logic for notes data when storage path changes
+- User prompts during notes migration process with improved error handling
+- Support for NVDA 2026.1 with updated last tested version to 2026.1
+- Enhanced CI/CD workflow with Pandoc automatic download and testing
+- Workflow caching for pre-commit hooks and scons builds
+- Gettext tools installation to Windows CI runner
+- Code quality automation with ruff and GitHub Actions
+- Automated code formatting with Poetry for dependency management
 
 ### Changed
-- Updated minimum NVDA version from 2019.3 to 2024.1.
-- Updated last tested NVDA version to 2026.1.
-- Updated author information to Adil Shaikh.
-- Optimized GitHub Actions workflow with concurrency controls and performance improvements.
+- Renamed QuickNotetakerPanel to QuickNotesPanel for consistency
+- Updated notes path references to use 'quick_notes' directory structure
+- Updated author information to Adil Shaikh
+- Upgraded Python version to 3.13 in development workflows
+- Updated Poetry installation method to use pipx for improved consistency
+- Converted indentation from spaces to tabs (NVDA coding style compliance) across all files
+- Improved lambda expressions and code formatting for better readability
+- Optimized GitHub Actions workflow with concurrency controls and performance improvements
+
+### Refactored
+- Cleaned up imports across multiple files for better code organization
+- Enhanced notes data path handling with improved logging
+- Improved error handling and validation in settings configuration
+- Updated BuildVars, SConstruct, manifest templates, and site_scons to 2025 add-on template standards
 
 ### Fixed
-- Fixed test case execution in CI/CD pipeline with proper PowerShell syntax.
-- Fixed cache path handling for Windows runners in workflow.
+- Fixed test case execution in CI/CD pipeline with proper PowerShell syntax
+- Fixed cache path handling for Windows runners in GitHub Actions workflow
+- Resolved merge conflicts with spaces2tabs formatting
 
 ## [1.3] - 2025-07-18
 ### Added
