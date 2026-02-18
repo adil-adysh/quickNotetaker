@@ -108,7 +108,10 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 				try:
 					info = ti.makeTextInfo(textInfos.POSITION_SELECTION)
 					if not info.isCollapsed:
-						return info.text
+						text = info.text
+						# Return text only if it's not empty
+						if text and text.strip():
+							return text
 				except (RuntimeError, NotImplementedError, AttributeError, TypeError):
 					pass
 
@@ -116,7 +119,10 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 			try:
 				info = obj.makeTextInfo(textInfos.POSITION_SELECTION)
 				if not info.isCollapsed:
-					return info.text
+					text = info.text
+					# Return text only if it's not empty
+					if text and text.strip():
+						return text
 			except (RuntimeError, NotImplementedError, AttributeError, TypeError):
 				pass
 
